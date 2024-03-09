@@ -1,0 +1,4 @@
+.pio
+devel*
+build*
+.vscode
