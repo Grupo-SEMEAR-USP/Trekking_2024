@@ -1,0 +1,16 @@
+digraph G {
+"base_link" -> "base_link_front"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"world" -> "base_link"[label=" Broadcaster: /odom_pub_node\nAverage rate: 1.25\nBuffer length: 4.0\nMost recent transform: 390.014\nOldest transform: 386.014\n"];
+"base_link" -> "chassi_link"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "imu_link"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "link_acker_front_left"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 390.017\nOldest transform: 385.117\n"];
+"base_link" -> "link_acker_front_right"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 390.017\nOldest transform: 385.117\n"];
+"link_acker_front_left" -> "link_wheel_front_left"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 390.017\nOldest transform: 385.117\n"];
+"link_acker_front_right" -> "link_wheel_front_right"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 390.017\nOldest transform: 385.117\n"];
+"base_link" -> "link_wheel_rear_left"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 390.017\nOldest transform: 385.117\n"];
+"base_link" -> "link_wheel_rear_right"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10.204\nBuffer length: 4.9\nMost recent transform: 390.017\nOldest transform: 385.117\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 390.061"[ shape=plaintext ] ;
+}->"world";
+}

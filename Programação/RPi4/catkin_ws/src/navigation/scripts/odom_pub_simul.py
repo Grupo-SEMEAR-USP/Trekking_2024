@@ -36,7 +36,7 @@ class OdometryClass:
         #Filling the transform message with the information from gazebo
         self.t.header.stamp = rospy.Time.now()
         self.t.header.frame_id = self.global_frame_id
-        self.t.child_frame_id = self.vehicle_name
+        self.t.child_frame_id = 'base_link'
         self.t.transform.translation.x = msg.pose[self.vehicle_index].position.x
         self.t.transform.translation.y = msg.pose[self.vehicle_index].position.y
         self.t.transform.translation.z = 0.0
