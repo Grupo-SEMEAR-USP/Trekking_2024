@@ -4,7 +4,7 @@
   <arg name="model" default="ackermann"/>
 
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find ackermann_vehicle_description)/urdf/Ackermann_robot.urdf.xacro'"/>
+  <param name="robot_description" command="$(find xacro)/xacro '$(find ackermann_vehicle_description)/robot/urdf/Ackermann_robot.urdf.xacro'"/>
 
   <!-- send fake joint values -->
   <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>

@@ -761,14 +761,5 @@
   <xacro:rear_wheel lr_prefix="right" fr_prefix="rear"
                     lr_reflect="-1" fr_reflect="-1"/>
 
-  <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <!-- As of 10/7/13, setting controlPeriod to a value greater than
-           Gazebo's simulation period prevents the shock absorbers from
-           working.
-      <controlPeriod>${ctrl_period}</controlPeriod>
-      -->
-    </plugin>
-  </gazebo>
+  
 </robot>
