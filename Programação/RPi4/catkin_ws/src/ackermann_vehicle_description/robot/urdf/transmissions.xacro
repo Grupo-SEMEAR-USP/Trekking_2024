@@ -5,7 +5,8 @@
     <transmission name="acker_front_left_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <actuator name="$acker_front_left_servo">
-            <mechanicalReduction>1</mechanicalReduction>
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
         </actuator>
         <joint name="joint_acker_front_left">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -15,7 +16,8 @@
     <transmission name="acker_front_right_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <actuator name="$acker_front_right_servo">
-            <mechanicalReduction>1</mechanicalReduction>
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
         </actuator>
         <joint name="joint_acker_front_right">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
@@ -52,6 +54,7 @@
         <transmission name="${preffix}_${suffix}_wheel_trans">
           <type>transmission_interface/SimpleTransmission</type>
           <actuator name="${preffix}_${suffix}_wheel_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
           </actuator>
           <joint name="joint_wheel_${preffix}_${suffix}">

@@ -161,7 +161,7 @@ class _AckermannCtrlr(object):
         list_ctrlrs.wait_for_service()
 
         # Shock absorbers
-        shock_param_list = rospy.get_param("~shock_absorbers", [])
+        '''shock_param_list = rospy.get_param("~shock_absorbers", [])
         self._shock_pubs = []
         try:
             for shock_params in shock_param_list:
@@ -185,7 +185,7 @@ class _AckermannCtrlr(object):
                 self._shock_pubs.append(pub)
         except:
             rospy.logwarn("The specified list of shock absorbers is invalid. "
-                          "No shock absorbers will be used.")
+                          "No shock absorbers will be used.")'''
 
         # Command timeout
         try:
@@ -440,7 +440,7 @@ class _AckermannCtrlr(object):
             self._right_rear_ang_vel = \
                 gain * right_dist * self._right_rear_inv_circ
 
-    _DEF_WHEEL_DIA = 1.0    # Default wheel diameter. Unit: meter.
+    _DEF_WHEEL_DIA = 0.1    # Default wheel diameter. Unit: meter.
     _DEF_EQ_POS = 0.0       # Default equilibrium position. Unit: meter.
     _DEF_CMD_TIMEOUT = 0.5  # Default command timeout. Unit: second.
     _DEF_PUB_FREQ = 30.0    # Default publishing frequency. Unit: hertz.
