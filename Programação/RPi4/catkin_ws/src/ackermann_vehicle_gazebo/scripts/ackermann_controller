@@ -232,14 +232,25 @@ class _AckermannCtrlr(object):
         self._left_rear_ang_vel = 0.0
         self._right_rear_ang_vel = 0.0
 
+        #Assuring that the transforms we are looking for to use in the calculations below are being published before we proceed
+        tfl = tf.TransformListener()
+        while (True):
+            try:
+                tfl.waitForTransform("base_link", "left_virtual_frame", rospy.Time(), rospy.Duration(1))
+                tfl.waitForTransform("base_link", "right_virtual_frame", rospy.Time(), rospy.Duration(1))
+                rospy.loginfo("Transformações disponíveis")
+                break
+            except tf.Exception as e:
+                rospy.loginfo("Transformações ainda não disponíveis")
+
+
         # _joint_dist_div_2 is the distance between the steering joints,
         # divided by two.
-        tfl = tf.TransformListener()
         ls_pos = self._get_link_pos(tfl, left_steer_link_name)
         rs_pos = self._get_link_pos(tfl, right_steer_link_name)
         self._joint_dist_div_2 = numpy.linalg.norm(ls_pos - rs_pos) / 2
         lrw_pos = self._get_link_pos(tfl, left_rear_link_name)
-        rrw_pos = numpy.array([0.0] * 3)
+        rrw_pos = numpy.array([0.0] * 3) #The rear right wheel is being considered the center of reference in this analysis
         front_cent_pos = (ls_pos + rs_pos) / 2     # Front center position
         rear_cent_pos = (lrw_pos + rrw_pos) / 2    # Rear center position
         self._wheelbase = numpy.linalg.norm(front_cent_pos - rear_cent_pos)
@@ -300,8 +311,7 @@ class _AckermannCtrlr(object):
             if self._left_front_axle_cmd_pub:
                 self._left_front_axle_cmd_pub.publish(self._left_front_ang_vel)
             if self._right_front_axle_cmd_pub:
-                self._right_front_axle_cmd_pub.\
-                    publish(self._right_front_ang_vel)
+                self._right_front_axle_cmd_pub.publish(self._right_front_ang_vel)
             if self._left_rear_axle_cmd_pub:
                 self._left_rear_axle_cmd_pub.publish(self._left_rear_ang_vel)
             if self._right_rear_axle_cmd_pub:
@@ -341,7 +351,7 @@ class _AckermannCtrlr(object):
         # axle controller name, and inverse of the circumference.
 
         prefix = "~" + side + "_rear_wheel/"
-        link_name = rospy.get_param(prefix + "link_name", side + "_wheel")
+        link_name = rospy.get_param(prefix + "link_name", side + "rear_wheel")
         axle_ctrlr_name, inv_circ = self._get_common_wheel_params(prefix)
         return link_name, axle_ctrlr_name, inv_circ
 

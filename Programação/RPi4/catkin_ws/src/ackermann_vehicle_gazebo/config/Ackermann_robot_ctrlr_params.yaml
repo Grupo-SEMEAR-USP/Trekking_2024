@@ -25,13 +25,13 @@
 # limitations under the License.
 
 left_front_wheel:
-  steering_link_name: link_wheel_front_left
+  steering_link_name: left_virtual_frame
   steering_controller_name: left_steering_ctrlr
   axle_controller_name: left_front_axle_ctrlr
   diameter: 0.14605
 
 right_front_wheel:
-  steering_link_name: link_wheel_front_right
+  steering_link_name: right_virtual_frame
   steering_controller_name: right_steering_ctrlr
   axle_controller_name: right_front_axle_ctrlr
   diameter: 0.14605

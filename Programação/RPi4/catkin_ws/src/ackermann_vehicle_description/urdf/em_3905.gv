@@ -1,0 +1,74 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"camera_link" [label="camera_link"];
+"chassis" [label="chassis"];
+"left_steering_link" [label="left_steering_link"];
+"left_front_axle_carrier" [label="left_front_axle_carrier"];
+"left_front_wheel" [label="left_front_wheel"];
+"left_rear_axle_carrier" [label="left_rear_axle_carrier"];
+"left_rear_wheel" [label="left_rear_wheel"];
+"right_steering_link" [label="right_steering_link"];
+"right_front_axle_carrier" [label="right_front_axle_carrier"];
+"right_front_wheel" [label="right_front_wheel"];
+"right_rear_axle_carrier" [label="right_rear_axle_carrier"];
+"right_rear_wheel" [label="right_rear_wheel"];
+"laser_link" [label="laser_link"];
+"leg01" [label="leg01"];
+"leg02" [label="leg02"];
+"leg03" [label="leg03"];
+"leg04" [label="leg04"];
+"leg1" [label="leg1"];
+"leg2" [label="leg2"];
+"leg3" [label="leg3"];
+"leg4" [label="leg4"];
+"upper" [label="upper"];
+"upper_two" [label="upper_two"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "base_link_to_camera" [label="xyz: 0.13 0 0.24 \nrpy: 0 -0 0"]
+"base_link_to_camera" -> "camera_link"
+"base_link" -> "base_link_to_chasis" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_chasis" -> "chassis"
+"chassis" -> "left_front_shock" [label="xyz: 0.1675 0.1525 -0.0235 \nrpy: 0 -0 0"]
+"left_front_shock" -> "left_steering_link"
+"left_steering_link" -> "left_steering_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"left_steering_joint" -> "left_front_axle_carrier"
+"left_front_axle_carrier" -> "left_front_axle" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"left_front_axle" -> "left_front_wheel"
+"chassis" -> "left_rear_shock" [label="xyz: -0.1675 0.1525 -0.0235 \nrpy: 0 -0 0"]
+"left_rear_shock" -> "left_rear_axle_carrier"
+"left_rear_axle_carrier" -> "left_rear_axle" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"left_rear_axle" -> "left_rear_wheel"
+"chassis" -> "right_front_shock" [label="xyz: 0.1675 -0.1525 -0.0235 \nrpy: 0 -0 0"]
+"right_front_shock" -> "right_steering_link"
+"right_steering_link" -> "right_steering_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"right_steering_joint" -> "right_front_axle_carrier"
+"right_front_axle_carrier" -> "right_front_axle" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"right_front_axle" -> "right_front_wheel"
+"chassis" -> "right_rear_shock" [label="xyz: -0.1675 -0.1525 -0.0235 \nrpy: 0 -0 0"]
+"right_rear_shock" -> "right_rear_axle_carrier"
+"right_rear_axle_carrier" -> "right_rear_axle" [label="xyz: 0 0 0 \nrpy: 1.5708 -0 0"]
+"right_rear_axle" -> "right_rear_wheel"
+"base_link" -> "base_link_to_laser" [label="xyz: -0.03 0 0.25 \nrpy: 0 -0 0"]
+"base_link_to_laser" -> "laser_link"
+"base_link" -> "base_link_to_leg01" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg01" -> "leg01"
+"base_link" -> "base_link_to_leg02" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg02" -> "leg02"
+"base_link" -> "base_link_to_leg03" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg03" -> "leg03"
+"base_link" -> "base_link_to_leg04" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg04" -> "leg04"
+"base_link" -> "base_link_to_leg1" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg1" -> "leg1"
+"base_link" -> "base_link_to_leg2" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg2" -> "leg2"
+"base_link" -> "base_link_to_leg3" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg3" -> "leg3"
+"base_link" -> "base_link_to_leg4" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_leg4" -> "leg4"
+"base_link" -> "base_link_to_upper" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_upper" -> "upper"
+"base_link" -> "base_link_to_upper_two" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"base_link_to_upper_two" -> "upper_two"
+}

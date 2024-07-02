@@ -77,7 +77,4 @@
     <xacro:wheel_transmission preffix="rear" suffix="left"/>
     <xacro:wheel_transmission preffix="rear" suffix="right"/>
 
-
-
-
 </robot>

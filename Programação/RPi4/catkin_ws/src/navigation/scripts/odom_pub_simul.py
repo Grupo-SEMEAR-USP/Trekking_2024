@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 
-import tf_conversions
+import tf
 
 import tf2_ros
 import geometry_msgs.msg
@@ -25,6 +25,33 @@ class OdometryClass:
         self.t = geometry_msgs.msg.TransformStamped()
 
         self.rate = rospy.Rate(1) #Defining the rate that odom_msg will be published and the transform information will be sent
+
+        #Defining virtual frames to help in some geometry calculations in the ackermann_controller node
+        #Left virtual frame
+        self.t_left = geometry_msgs.msg.TransformStamped()
+        self.t_left.header.stamp = rospy.Time.now()
+        self.t_left.header.frame_id = "base_link"
+        self.t_left.child_frame_id = "left_virtual_frame"
+        self.t_left.transform.translation.x = 0.10378 
+        self.t_left.transform.translation.y = -0.21397
+        self.t_left.transform.translation.z = -0.0371
+        self.t_left.transform.rotation.x = 0.0
+        self.t_left.transform.rotation.y = 0.0
+        self.t_left.transform.rotation.z = 0.0
+        self.t_left.transform.rotation.w = 1.0
+
+        #Right virtual frame
+        self.t_right = geometry_msgs.msg.TransformStamped()
+        self.t_right.header.stamp = rospy.Time.now()
+        self.t_right.header.frame_id = "base_link"
+        self.t_right.child_frame_id = "right_virtual_frame"
+        self.t_right.transform.translation.x = -0.10624 
+        self.t_right.transform.translation.y = -0.21396 
+        self.t_right.transform.translation.z = -0.0371
+        self.t_right.transform.rotation.x = 0.0
+        self.t_right.transform.rotation.y = 0.0
+        self.t_right.transform.rotation.z = 0.0
+        self.t_right.transform.rotation.w = 1.0
 
         self.odom_tf_pub()
 
@@ -51,8 +78,12 @@ class OdometryClass:
     
     def odom_tf_pub(self):
         while not rospy.is_shutdown():
-            self.br.sendTransform(self.t) #Updating the transform tree
+            self.br.sendTransform(self.t) #Updating the transform tree with the transform between the base_link and the world
             self.odom_publisher.publish(self.odom_msg) #Publishing the odometry message into the topic /odom
+
+            #Broadcasting the transforms involving the virtual frames
+            self.br.sendTransform(self.t_left)
+            self.br.sendTransform(self.t_right)
 
             self.rate.sleep()
 
