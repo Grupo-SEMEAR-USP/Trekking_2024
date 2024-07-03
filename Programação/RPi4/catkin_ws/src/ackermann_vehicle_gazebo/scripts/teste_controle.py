@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+#Nó de teste dos controladores das juntas do robô
 import rospy
 from std_msgs.msg import Float64
 

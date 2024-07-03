@@ -39,7 +39,7 @@ limitations under the License.
   <arg name="namespace" default="/"/>
   <arg name="cmd_timeout" default="0.5"/>
   <!-- <arg name="world_name" default="worlds/dımbasbos.world"/> --> 
-  <arg name="world_name" default="$(find ackermann_vehicle_gazebo)/worlds/.world"/>
+  <arg name="world_name" default="$(find ackermann_vehicle_gazebo)/worlds/newest.world"/>
 
   <!-- Vehicle pose -->
   <arg name="x" default="0.0"/>
@@ -58,6 +58,7 @@ limitations under the License.
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
       <arg name="world_name" value="$(arg world_name)"/>
     </include>
+    
     <!-- Spawn the vehicle. -->
     <node name="spawn_vehicle" pkg="gazebo_ros" type="spawn_model"
           args="-urdf -param robot_description -model ackermann_vehicle
