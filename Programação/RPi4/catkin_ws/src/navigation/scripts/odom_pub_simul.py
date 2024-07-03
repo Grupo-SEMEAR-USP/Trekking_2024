@@ -11,7 +11,7 @@ from nav_msgs.msg import Odometry
 class OdometryClass:
     def __init__(self): #Constructor of the class
         self.vehicle_name = rospy.get_param('~vehicle_name', 'ackermann_vehicle')
-        self.global_frame_id = rospy.get_param('~global_frame_id', 'world')
+        self.global_frame_id = rospy.get_param('~global_frame_id', 'odom')
         self.odom_publisher = rospy.Publisher('/odom', Odometry, queue_size=1)
         rospy.Subscriber('/gazebo/model_states',
                         ModelStates,
@@ -25,6 +25,19 @@ class OdometryClass:
         self.t = geometry_msgs.msg.TransformStamped()
 
         self.rate = rospy.Rate(1) #Defining the rate that odom_msg will be published and the transform information will be sent
+
+        #Defining the map frame and creating the transform between it and the odom frame
+        self.t_map_odom = geometry_msgs.msg.TransformStamped()
+        self.t_map_odom.header.stamp = rospy.Time.now()
+        self.t_map_odom.header.frame_id = "map"
+        self.t_map_odom.child_frame_id = "odom"
+        self.t_map_odom.transform.translation.x = 0.10378 
+        self.t_map_odom.transform.translation.y = -0.21397
+        self.t_map_odom.transform.translation.z = -0.0371
+        self.t_map_odom.transform.rotation.x = 0.0
+        self.t_map_odom.transform.rotation.y = 0.0
+        self.t_map_odom.transform.rotation.z = 0.0
+        self.t_map_odom.transform.rotation.w = 1.0
 
         #Defining virtual frames to help in some geometry calculations in the ackermann_controller node
         #Left virtual frame
@@ -57,8 +70,6 @@ class OdometryClass:
 
     def handle_vehicle_pose(self, msg, vehicle_name): #Callback function to the topic gazebo/model_states
         self.vehicle_index = msg.name.index(vehicle_name)
-        '''br = tf2_ros.TransformBroadcaster()
-        t = geometry_msgs.msg.TransformStamped()'''
 
         #Filling the transform message with the information from gazebo
         self.t.header.stamp = rospy.Time.now()
@@ -80,6 +91,8 @@ class OdometryClass:
         while not rospy.is_shutdown():
             self.br.sendTransform(self.t) #Updating the transform tree with the transform between the base_link and the world
             self.odom_publisher.publish(self.odom_msg) #Publishing the odometry message into the topic /odom
+
+            self.br.sendTransform(self.t_map_odom) #Updating the transform between the map and the odom frames
 
             #Broadcasting the transforms involving the virtual frames
             self.br.sendTransform(self.t_left)

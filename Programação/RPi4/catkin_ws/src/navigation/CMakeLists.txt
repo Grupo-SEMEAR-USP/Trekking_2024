@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  move_base
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,7 +106,7 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES navigation
- CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+ CATKIN_DEPENDS roscpp rospy std_msgs message_runtime move_base
  DEPENDS system_lib
 )
 

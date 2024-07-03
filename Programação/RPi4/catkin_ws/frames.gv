@@ -1,18 +1,12 @@
 digraph G {
-"base_link" -> "base_link_front"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
-"world" -> "base_link"[label=" Broadcaster: /odom_pub_node\nAverage rate: 1.25\nBuffer length: 4.0\nMost recent transform: 45.781\nOldest transform: 41.781\n"];
-"base_link" -> "chassi_link"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
-"base_link" -> "imu_link"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
-"base_link" -> "link_acker_front_left"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 20.268\nBuffer length: 4.934\nMost recent transform: 46.329\nOldest transform: 41.395\n"];
-"base_link" -> "link_acker_front_right"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 20.268\nBuffer length: 4.934\nMost recent transform: 46.329\nOldest transform: 41.395\n"];
-"link_acker_front_left" -> "link_wheel_front_left"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 20.268\nBuffer length: 4.934\nMost recent transform: 46.329\nOldest transform: 41.395\n"];
-"link_acker_front_right" -> "link_wheel_front_right"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 20.268\nBuffer length: 4.934\nMost recent transform: 46.329\nOldest transform: 41.395\n"];
-"base_link" -> "link_wheel_rear_left"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 20.268\nBuffer length: 4.934\nMost recent transform: 46.329\nOldest transform: 41.395\n"];
-"base_link" -> "link_wheel_rear_right"[label=" Broadcaster: /vehicle_state_publisher\nAverage rate: 20.268\nBuffer length: 4.934\nMost recent transform: 46.329\nOldest transform: 41.395\n"];
-"base_link" -> "left_virtual_frame"[label=" Broadcaster: /odom_pub_node\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 12.782\nOldest transform: 12.782\n"];
-"base_link" -> "right_virtual_frame"[label=" Broadcaster: /odom_pub_node\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 12.782\nOldest transform: 12.782\n"];
+"base_link" -> "base_link_front"[label=" Broadcaster: /ackermann_vehicle/vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "chassi_link"[label=" Broadcaster: /ackermann_vehicle/vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "imu_link"[label=" Broadcaster: /ackermann_vehicle/vehicle_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"map" -> "odom"[label=" Broadcaster: /odom_pub_node\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 1720049583.366\nOldest transform: 1720049583.366\n"];
+"base_link" -> "left_virtual_frame"[label=" Broadcaster: /odom_pub_node\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 1720049583.366\nOldest transform: 1720049583.366\n"];
+"base_link" -> "right_virtual_frame"[label=" Broadcaster: /odom_pub_node\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 1720049583.366\nOldest transform: 1720049583.366\n"];
 edge [style=invis];
  subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
-"Recorded at time: 46.382"[ shape=plaintext ] ;
-}->"world";
+"Recorded at time: 1720049625.9667656"[ shape=plaintext ] ;
+}->"base_link";
 }
