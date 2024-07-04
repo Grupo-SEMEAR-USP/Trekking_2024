@@ -22,7 +22,19 @@ class OdometryClass:
 
         self.odom_msg = Odometry()
         self.br = tf2_ros.TransformBroadcaster()
+
+        #Defining the initial conditions of the transform between the odom and the base_link frames
         self.t = geometry_msgs.msg.TransformStamped()
+        self.t.header.stamp = rospy.Time.now()
+        self.t.header.frame_id = "odom"
+        self.t.child_frame_id = "base_link"
+        self.t.transform.translation.x = 0.0
+        self.t.transform.translation.y = 0.0
+        self.t.transform.translation.z = 0.0
+        self.t.transform.rotation.x = 0.0
+        self.t.transform.rotation.y = 0.0
+        self.t.transform.rotation.z = 0.0
+        self.t.transform.rotation.w = 1
 
         self.rate = rospy.Rate(1) #Defining the rate that odom_msg will be published and the transform information will be sent
 
@@ -31,9 +43,9 @@ class OdometryClass:
         self.t_map_odom.header.stamp = rospy.Time.now()
         self.t_map_odom.header.frame_id = "map"
         self.t_map_odom.child_frame_id = "odom"
-        self.t_map_odom.transform.translation.x = 0.10378 
-        self.t_map_odom.transform.translation.y = -0.21397
-        self.t_map_odom.transform.translation.z = -0.0371
+        self.t_map_odom.transform.translation.x = 0.0
+        self.t_map_odom.transform.translation.y = 0.0
+        self.t_map_odom.transform.translation.z = 0.0
         self.t_map_odom.transform.rotation.x = 0.0
         self.t_map_odom.transform.rotation.y = 0.0
         self.t_map_odom.transform.rotation.z = 0.0
@@ -73,8 +85,6 @@ class OdometryClass:
 
         #Filling the transform message with the information from gazebo
         self.t.header.stamp = rospy.Time.now()
-        self.t.header.frame_id = self.global_frame_id
-        self.t.child_frame_id = 'base_link'
         self.t.transform.translation.x = msg.pose[self.vehicle_index].position.x
         self.t.transform.translation.y = msg.pose[self.vehicle_index].position.y
         self.t.transform.translation.z = 0.0
