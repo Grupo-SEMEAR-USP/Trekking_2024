@@ -164,6 +164,7 @@ catkin_install_python(PROGRAMS
   scripts/odom_pub.py
   scripts/odom_pub_simul.py
   scripts/cmd_vel_to_ackermann_drive.py
+  scripts/tf_publisher.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

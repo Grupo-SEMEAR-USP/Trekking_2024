@@ -1,3 +1,16 @@
+# General configurations
+controller_frequency: 1.0
+recovery_behaviour_enabled: true
+
+#1 Global planner config
+NavfnROS:
+  allow_unknown: true # Specifies whether or not to allow navfn to create plans that traverse unknown space.
+  default_tolerance: 0.1 # A tolerance on the goal point for the planner.
+
+#2 Global planner config
+
+
+#1 Local planner config
 TebLocalPlannerROS:
 
  odom_topic: odom
@@ -19,27 +32,27 @@ TebLocalPlannerROS:
  max_vel_theta: 0.3
  acc_lim_x: 0.5
  acc_lim_theta: 0.5
- min_turning_radius: 0.0
+
+ # ********************** Carlike robot parameters ********************
+ min_turning_radius: 0.5        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
+ wheelbase: 0.4                 # Wheelbase of our robot
+ cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
+ # ********************************************************************
+
  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
-   type: "point"
-   radius: 0.2 # for type "circular"
-   line_start: [-0.3, 0.0] # for type "line"
-   line_end: [0.3, 0.0] # for type "line"
-   front_offset: 0.2 # for type "two_circles"
-   front_radius: 0.2 # for type "two_circles"
-   rear_offset: 0.2 # for type "two_circles"
-   rear_radius: 0.2 # for type "two_circles"
-   vertices: [ [0.25, -0.05], [0.18, -0.05], [0.18, -0.18], [-0.19, -0.18], [-0.25, 0], [-0.19, 0.18], [0.18, 0.18], [0.18, 0.05], [0.25, 0.05] ] # for type "polygon"
+   type: "polygon"
+   vertices: [ [1,1], [1,-1] , [-1,-1], [-1,1]] # for type "polygon"
 
  # GoalTolerance
     
- xy_goal_tolerance: 0.2
- yaw_goal_tolerance: 0.1
+ xy_goal_tolerance: 0.2     # testar intoloerâncias maiores para compensar a falta
+ yaw_goal_tolerance: 0.1    # de sensoriamento
  free_goal_vel: False
     
  # Obstacles
     
- min_obstacle_dist: 0.4
+ min_obstacle_dist: 0.1     # Esses dois parametros podem ser baixos
+ inflation_dist: 0.2        # distancia ao redor de obstáculos para que o custo seja aumentado 
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0
  obstacle_poses_affected: 30
@@ -79,3 +92,25 @@ TebLocalPlannerROS:
  obstacle_keypoint_offset: 0.1
  obstacle_heading_threshold: 0.45
  visualize_hc_graph: False
+
+#2 Local planner config
+DWAPlannerROS:
+  # Robot configuration parameters  
+  acc_lim_x: 2.5
+  acc_lim_y: 0
+  acc_lim_theta: 3.2
+
+  max_vel_x: 0.5
+  min_vel_x: 0.0
+  max_vel_y: 0
+  min_vel_y: 0
+
+  max_vel_trans: 0.5
+  min_vel_trans: 0.1
+  max_vel_theta: 1.0
+  min_vel_theta: 0.2
+
+  # Goal Tolerance Parameters
+  yaw_goal_tolerance: 0.1
+  xy_goal_tolerance: 0.2
+  latch_xy_goal_tolerance: false

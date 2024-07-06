@@ -37,7 +37,5 @@ https://answers.ros.org/question/366957/problem-with-xacro-invalid-param/
     <node name="vehicle_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
       <param name="publish_frequency" value="30.0"/>
     </node>
-
-    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
   </group>
 </launch>

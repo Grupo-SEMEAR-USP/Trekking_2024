@@ -1,12 +1,13 @@
 <launch>
-    <!-- Nao temos sensores -->
-   <!--<node pkg="sensor_node_pkg" type="sensor_node_type" name="sensor_node_name" output="screen">
-    <param name="sensor_param" value="param_value" />
- </node>-->
- 
- <!-- Odometria e TF -->
- <node pkg="navigation" type="odom_pub_simul.py" name="odom_node" output="screen">
-    <!--<param name="odom_param" value="param_value" />-->
- </node>
+   <!-- Sem informações sensorias :( -->
+
+   <!-- Odometria -->
+   <node pkg="navigation" type="odom_pub_simul.py" name="odom_node" output="screen"/>
+
+   <!-- TF -->
+   <node pkg="navigation" type="tf_publisher.py" name="tf_node" output="screen"/>
+
+   <!-- Node that converts Twist msgs from cmd_vel to AckermannDrive msgs, which are published in /ackermann_cmd -->
+   <node name="cmd_vel_converter_node" pkg="navigation" type="cmd_vel_to_ackermann_drive.py" output="screen"/>
 
 </launch> 

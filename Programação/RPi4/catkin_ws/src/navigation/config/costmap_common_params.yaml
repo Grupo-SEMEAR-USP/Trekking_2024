@@ -1,12 +1,22 @@
 # nao temos sensores, o que fazer com isso
-obstacle_range: 2.5   # Range de leitura maximo do sensor no costmap
-raytrace_range: 3.0   # Distancia em que o robo comeca a prever trajetorias
+transform_tolerance: 0.2 # define a latencia maxima entre transformaçoes do global_frame pro robot_base_frame
 footprint: [[1, 1], [1, -1], [-1, -1], [-1, 1]] # posicao das rodas sendo [0,0] o centro do robo
-inflation_radius: 0.55 # trata obstaculos a 0.55m com peso igual
+maptype: costmap
 
-#observation_sources: laser_scan_sensor point_cloud_sensor # sensores que passam informacao para o costmap
+inflation_layer:
+ enabled: true
+ inflation_radius: 5 # trata obstaculos a 0.55m com peso igual
+ cost_scaling_factor: 10.0
 
-# sconfig dos sesores 
-# laser_scan_sensor: {sensor_frame: frame_name, data_type: LaserScan, topic: topic_name, marking: true, clearing: true}
+static_layer:
+  enabled: true
+  map_topic: "/map"
+  subscribe_to_updates: true
 
-# point_cloud_sensor: {sensor_frame: frame_name, data_type: PointCloud, topic: topic_name, marking: true, clearing: true}
+obstacle_layer:
+ enabled: true
+ obstacle_range: 3.0
+ raytrace_range: 3.5
+ inflation_radius: 0.2
+ track_unknown_space: false
+ combination_method: 1
