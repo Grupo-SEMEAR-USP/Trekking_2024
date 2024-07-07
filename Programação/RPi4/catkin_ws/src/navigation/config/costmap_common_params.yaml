@@ -1,22 +1,17 @@
 # nao temos sensores, o que fazer com isso
-transform_tolerance: 2 # define a latencia maxima entre transformaçoes do global_frame pro robot_base_frame
-footprint: [[0.3, 0.3], [0.3, -0.3], [-0.3, -0.3], [-0.3, 0.3]] # posicao das rodas sendo [0,0] o centro do robo
+transform_tolerance: 0.2 # define a latencia maxima entre transformaçoes do global_frame pro robot_base_frame
+footprint: [[0.10,0.15], [0.10,-0.15] , [-0.10,-0.15], [-0.10,0.15]] # posicao das rodas sendo [0,0] o centro do robo
+footprint_padding: 0.01
 maptype: costmap
 
 inflation_layer:
  enabled: true
- inflation_radius: 0.8
- cost_scaling_factor: 2.0
+ inflation_radius: 1 # trata obstaculos a 0.55m com peso igual
+ cost_scaling_factor: 10.0
 
 static_layer:
   enabled: true
   map_topic: "/map"
   subscribe_to_updates: true
-
-obstacle_layer:
- enabled: true
- obstacle_range: 3.0
- raytrace_range: 3.5
- inflation_radius: 0.2
- track_unknown_space: false
- combination_method: 1
+  track_unknown_space: false
+  first_map_only: true

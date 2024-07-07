@@ -1,5 +1,5 @@
 # General configurations
-controller_frequency: 1.0
+controller_frequency: 5.0
 recovery_behaviour_enabled: true
 
 #1 Global planner config
@@ -13,8 +13,8 @@ NavfnROS:
 #1 Local planner config
 TebLocalPlannerROS:
 
- odom_topic: odom
- map_frame: /odom
+ odom_topic: /odom
+ map_frame: map
     
  # Trajectory
   
@@ -35,13 +35,13 @@ TebLocalPlannerROS:
 
  # ********************** Carlike robot parameters ********************
  min_turning_radius: 0.5        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
- wheelbase: 0.4                 # Wheelbase of our robot
- cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
+ #wheelbase: 0.4                 # Wheelbase of our robot
+ #cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
  # ********************************************************************
 
  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
    type: "polygon"
-   vertices: [ [1,1], [1,-1] , [-1,-1], [-1,1]] # for type "polygon"
+   vertices: [ [0.10,0.15], [0.10,-0.15] , [-0.10,-0.15], [-0.10,0.15]] # for type "polygon"
 
  # GoalTolerance
     
@@ -51,7 +51,7 @@ TebLocalPlannerROS:
     
  # Obstacles
     
- min_obstacle_dist: 0.1     # Esses dois parametros podem ser baixos
+ min_obstacle_dist: 0.4     # Esses dois parametros podem ser baixos
  inflation_dist: 0.2        # distancia ao redor de obstáculos para que o custo seja aumentado 
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0
@@ -77,7 +77,7 @@ TebLocalPlannerROS:
  weight_optimaltime: 1
  weight_obstacle: 50
  weight_dynamic_obstacle: 10 # not in use yet
- alternative_time_cost: False # not in use yet
+ selection_alternative_time_cost: False # not in use yet
 
  # Homotopy Class Planner
 
@@ -98,7 +98,7 @@ DWAPlannerROS:
   # Robot configuration parameters  
   acc_lim_x: 2.5
   acc_lim_y: 0
-  acc_lim_theta: 3.2
+  acc_lim_th: 3.2
 
   max_vel_x: 0.5
   min_vel_x: 0.0

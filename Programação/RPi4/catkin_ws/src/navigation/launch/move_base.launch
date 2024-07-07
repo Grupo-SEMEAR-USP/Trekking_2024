@@ -21,6 +21,9 @@
     <rosparam file="$(find navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
 
+    <!-- Here we load our costmap conversion settings -->
+		<rosparam file="$(find navigation)/config/costmap_converter_params.yaml" command="load" />
+
     <!-- local costmap, needs size -->
     <rosparam file="$(find navigation)/config/local_costmap_params.yaml" command="load" ns="local_costmap" />
     <param name="local_costmap/width" value="10.0"/>
@@ -28,7 +31,8 @@
 
     <!-- static global costmap, static map provides size -->
     <rosparam file="$(find navigation)/config/global_costmap_params.yaml" command="load" ns="global_costmap" unless="$(arg no_static_map)"/>
-   
+
+    
   </node>
 
   <!-- Running RVIZ to visualization -->
