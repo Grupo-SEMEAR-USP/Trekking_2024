@@ -15,7 +15,7 @@ class OdometryClass:
 
         self.odom_msg = Odometry()
 
-        self.rate = rospy.Rate(100) #Defining the rate that odom_msg will be published and the transform information will be sent
+        self.rate = rospy.Rate(50) #Defining the rate that odom_msg will be published and the transform information will be sent
 
         self.odom_pub()
 

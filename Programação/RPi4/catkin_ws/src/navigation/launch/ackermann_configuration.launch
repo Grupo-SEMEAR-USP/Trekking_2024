@@ -10,4 +10,4 @@
    <!-- Node that converts Twist msgs from cmd_vel to AckermannDrive msgs, which are published in /ackermann_cmd -->
    <node name="cmd_vel_converter_node" pkg="navigation" type="cmd_vel_to_ackermann_drive.py" output="screen"/>
 
-</launch> 
+</launch>

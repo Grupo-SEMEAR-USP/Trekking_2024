@@ -17,8 +17,8 @@ class   TFClass:
         #Defining the map frame and creating the transform between it and the odom frame
         self.t_map_odom = geometry_msgs.msg.TransformStamped()
         self.t_map_odom.header.stamp = rospy.Time.now()
-        self.t_map_odom.header.frame_id = "map"
-        self.t_map_odom.child_frame_id = "odom"
+        self.t_map_odom.header.frame_id = "/map"
+        self.t_map_odom.child_frame_id = "/odom"
         self.t_map_odom.transform.translation.x = 0.0
         self.t_map_odom.transform.translation.y = 0.0
         self.t_map_odom.transform.translation.z = 0.0
@@ -30,7 +30,7 @@ class   TFClass:
         #Defining the initial conditions of the transform between the odom and the base_link frames
         self.t = geometry_msgs.msg.TransformStamped()
         self.t.header.stamp = rospy.Time.now()
-        self.t.header.frame_id = "odom"
+        self.t.header.frame_id = "/odom"
         self.t.child_frame_id = "base_link"
         self.t.transform.translation.x = 0.0
         self.t.transform.translation.y = 0.0
@@ -85,7 +85,7 @@ class   TFClass:
 
         #Broadcasting the transforms of all frames
         self.br.sendTransform(self.t_map_odom) #Updating the transform between the map and the odom frames
-        self.br.sendTransform(self.t) #Updating the transform between the base_link and the odom
+        self.br.sendTransform(self.t) #Updating the transform between odom and base_link
         self.br.sendTransform(self.t_left) #Updating the transform between the base_link and the left virtual frame
         self.br.sendTransform(self.t_right) #Updating the transform between the base_link and the right virtual frame
 
