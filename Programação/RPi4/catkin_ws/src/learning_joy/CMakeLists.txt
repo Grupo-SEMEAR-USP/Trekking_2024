@@ -10,7 +10,6 @@ project(learning_joy)
 find_package(catkin REQUIRED COMPONENTS
   joy
   roscpp
-  turtlesim
 )
 
 ## System dependencies are found with CMake's conventions
@@ -116,7 +115,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -205,5 +204,5 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(teleop_joy src/joycontrol.cpp)
-target_link_libraries(teleop_joy ${catkin_LIBRARIES})
+add_executable(joycontrol src/joycontrol.cpp)
+target_link_libraries(joycontrol ${catkin_LIBRARIES})
