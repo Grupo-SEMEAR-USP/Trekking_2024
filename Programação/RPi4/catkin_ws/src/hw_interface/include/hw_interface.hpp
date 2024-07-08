@@ -29,7 +29,8 @@ public:
     void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg);
     void commandTimeoutCallback(const ros::TimerEvent&); // Callback para o timeout
     void updateWheelSpeedForDeceleration(); // Desaceleração
-    float mapSpeed(float v_input); // Normalização da velocidade
+    double mapSpeed(double v_input); // Normalização da velocidade
+    double mapTangent(double tangent_input);
     void updateOdometry();
 
     bsc_i2c_handle i2c_master;
@@ -65,8 +66,9 @@ private:
     double wheel_separation_lenght;
     double front_four_bar_separation;
     double deceleration_rate; // Taxa de desaceleração
-    double max_speed; // Velocidade máxima
-    double min_speed; // Velocidade mínima
+    double vcenter_max_speed; // Velocidade máxima
+    double vcenter_min_speed; // Velocidade mínima
+
 
     // Parâmetros para a odometria 
 
@@ -103,5 +105,9 @@ private:
     double link_c;
     double link_d2;
     double phi_2_o;
+    double phi_tangent_lower_limit;
+    double phi_tangent_upper_limit;
+    //double q2_lower_limit;
+    //double q2_upper_limit;
 
 };

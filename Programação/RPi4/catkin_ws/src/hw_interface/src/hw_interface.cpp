@@ -20,14 +20,19 @@ RobotHWInterface::RobotHWInterface(ros::NodeHandle& nh, i2c_config_t& i2c_config
     nh.getParam("robot_control/wheel_separation_lenght", wheel_separation_lenght);
     nh.getParam("robot_control/front_four_bar_separation", front_four_bar_separation);
     nh.getParam("robot_control/deceleration_rate", deceleration_rate);
-    nh.getParam("robot_control/max_speed", max_speed);
-    nh.getParam("robot_control/min_speed", min_speed);
+    nh.getParam("robot_control/vcenter_max_speed", vcenter_max_speed);
+    nh.getParam("robot_control/vcenter_min_speed", vcenter_min_speed);
 
     nh.getParam("fourbar_geometry/link_a2", link_a2);
     nh.getParam("fourbar_geometry/link_b2", link_b2);
     nh.getParam("fourbar_geometry/link_c", link_c);
     nh.getParam("fourbar_geometry/link_d2", link_d2);
     nh.getParam("fourbar_geometry/phi_2_o", phi_2_o);
+    nh.getParam("fourbar_geometry/phi_tangent_lower_limit", phi_tangent_lower_limit);
+    nh.getParam("fourbar_geometry/phi_tangent_upper_limit", phi_tangent_upper_limit);
+    //nh.getParam("fourbar_geometry/q2_lower_limit", q2_lower_limit);
+    //nh.getParam("fourbar_geometry/q2_upper_limit", q2_upper_limit);
+
 
     current_time = ros::Time::now();
 }
@@ -172,9 +177,13 @@ void RobotHWInterface::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg)
     command_timeout_.start();
 }
 
-//float RobotHWInterface::mapSpeed(float v_input) {
-//    return std::min(std::max(v_input, min_speed), max_speed);
-//}
+double RobotHWInterface::mapSpeed(double v_input) {
+    return std::min(std::max(v_input, vcenter_min_speed), vcenter_max_speed);
+}
+
+double RobotHWInterface::mapTangent(double tangent_input) {
+    return std::min(std::max(tangent_input, phi_tangent_lower_limit), phi_tangent_upper_limit);
+}
 
 void RobotHWInterface::commandTimeoutCallback(const ros::TimerEvent&) {
     updateWheelSpeedForDeceleration();
@@ -266,11 +275,17 @@ void RobotHWInterface::ackermann_inverse(){
 
     static double left_vel;
     static double right_vel;
+    static double v_center;
     
-    tan_phi = (vel_angular_z_to_esp*wheel_separation_lenght*cos(total_theta_displacement))/(vel_linear_x_to_esp);
+    tan_phi = mapTangent((vel_angular_z_to_esp*wheel_separation_lenght*cos(total_theta_displacement))/(vel_linear_x_to_esp));
 
-    left_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_lenght))*((total_theta_displacement/tan_phi) - (wheel_separation_width/2));
-    right_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_lenght))*((total_theta_displacement/tan_phi) + (wheel_separation_width/2));
+    v_center = mapSpeed(vel_linear_x_to_esp/cos(total_theta_displacement));
+
+    left_vel = ((v_center*tan_phi)/wheel_separation_lenght)*((wheel_separation_lenght/tan_phi) - (wheel_separation_width/2));
+    right_vel = ((v_center*tan_phi)/wheel_separation_lenght)*((wheel_separation_lenght/tan_phi) + (wheel_separation_width/2));
+
+    //left_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_lenght))*((wheel_separation_lenght/tan_phi) - (wheel_separation_width/2));
+    //right_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_lenght))*((wheel_separation_lenght/tan_phi) + (wheel_separation_width/2));
     
     phi = atan(tan_phi);
     sin_phi  = sin(phi);
@@ -301,9 +316,14 @@ void RobotHWInterface::ackermann_inverse(){
 
     if(1.624 >= q2_sol2 && q2_sol2 <= 2.792) q2_final = q2_sol2; 
 
-    rear_left_wheel_speed = static_cast<float>(left_vel);
-    rear_right_wheel_speed = static_cast<float>(right_vel);
-    servo_angle = static_cast<float>(q2_final);
+    //if(q2_lower_limit >= q2_sol1 && q2_sol1 <= q2_upper_limit) q2_final = q2_sol1; 
+
+    //if(q2_lower_limit >= q2_sol2 && q2_sol2 <= q2_upper_limit) q2_final = q2_sol2; 
+
+
+    rear_left_wheel_speed = static_cast<float>(left_vel/wheel_radius);
+    rear_right_wheel_speed = static_cast<float>(right_vel/wheel_radius);
+    servo_angle = static_cast<float>(q2_final*(180.0/M_PI));
 
 }
 
