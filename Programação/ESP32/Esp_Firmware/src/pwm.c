@@ -52,7 +52,7 @@ void pwm_motors_init(){
     servo_config_t servo_config = servo_config_info(SERVO_PWM_TIMER,SERVO_PWM_CHANNEL,SERVO_DUTY_PIN);
 
     iot_servo_init(LEDC_LOW_SPEED_MODE, &servo_config);
-    iot_servo_write_angle(LEDC_LOW_SPEED_MODE, SERVO_PWM_CHANNEL, 45.0f);
+    iot_servo_write_angle(LEDC_LOW_SPEED_MODE, SERVO_PWM_CHANNEL, (float) SERVO_INITIAL_ANGLE);
     //iot_servo_init(LEDC_LOW_SPEED_MODE, &servo_config);
 
     //float angle = 45.0f;

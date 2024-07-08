@@ -17,17 +17,16 @@ void core1functions(void *params){
 
     i2c_driver_install(I2C_PORT,I2C_MODE_SLAVE,I2C_SLAVE_RX_BUF_LEN,I2C_SLAVE_TX_BUF_LEN,0);
 
-    uint8_t *rx_data = (uint8_t*) malloc(MENSAGE_SIZE);
-    uint8_t *tx_data = (uint8_t*) malloc(MENSAGE_SIZE);
-    
-   
+    uint8_t *rx_data = (uint8_t*) malloc(RX_MENSAGE_SIZE);
+    uint8_t *tx_data = (uint8_t*) malloc(TX_MENSAGE_SIZE);
+
     xEventGroupSetBits(initialization_groupEvent, task1_init_done);
 
     while(true){
 
-        i2c_write(tx_data, &global_motor_angular_speed_left, &global_motor_angular_speed_right);
+        i2c_write(tx_data, &global_total_x, &global_total_y, &global_total_theta, &global_time_stamp_miliseconds);
 
-        i2c_read(rx_data, &global_ros_angular_speed_left, &global_ros_angular_speed_right);
+        i2c_read(rx_data, &global_ros_angular_speed_left, &global_ros_angular_speed_right, &global_ros_servo_angle);
 
         vTaskDelay(pdMS_TO_TICKS(I2C_DELAY));
     }

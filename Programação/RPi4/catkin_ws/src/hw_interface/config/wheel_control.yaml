@@ -1,0 +1,8 @@
+robot_geometry:
+  wheel_separation_width: 0.25
+  wheel_separation_length: 0.26
+  front_four_bar_separation: 0.21
+  wheel_radius: 0.03
+  deceleration_rate: 0.4
+  max_speed: 5.3
+  min_speed: -5.3

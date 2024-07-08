@@ -51,8 +51,8 @@
 #define channel_choose(channel) ((channel == ESQ) ? LEDC_CHANNEL_0 : LEDC_CHANNEL_1) //Canal do timer do PWM
 #define timer_choose(timer) ((timer == ESQ) ? LEDC_TIMER_0 : LEDC_TIMER_1) //Timer escolhido
 #define enable_choose(channel) ((channel == ESQ) ? ENABLE_A : ENABLE_B) //Pino do enable
-#define motor_choose_in_primary(motor) ((motor == ESQ) ? INPUT_2 : INPUT_3) //Pino "primário" do motor
-#define motor_choose_in_secundary(motor) ((motor == ESQ) ? INPUT_1 : INPUT_4) //Pino "secundário" do motor
+#define motor_choose_in_primary(motor) ((motor == ESQ) ? INPUT_1 : INPUT_4) //Pino "primário" do motor
+#define motor_choose_in_secundary(motor) ((motor == ESQ) ? INPUT_2 : INPUT_3) //Pino "secundário" do motor
 
 //i2c constants
 #define I2C_DELAY 4
@@ -100,10 +100,10 @@
 #define NEG_GAP_REDUCTION_RIGHT -1400
 
 //encoder contasnts
-#define PCNT_CHA_LEFT 26
+#define PCNT_CHA_LEFT 14
 #define PCNT_CHB_LEFT 27
 
-#define PCNT_CHA_RIGHT 14
+#define PCNT_CHA_RIGHT 26
 #define PCNT_CHB_RIGHT 5
 
 #define PI 3.14159
