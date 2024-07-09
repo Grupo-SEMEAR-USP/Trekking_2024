@@ -26,9 +26,7 @@ class GlobalPlanner:
         self.odom_sub = rospy.Subscriber("/odom", Odometry, self.update_pose, queue_size=1)
         self.path_pub = rospy.Publisher("GlobalPlanner/plan", Path, queue_size=1) #Topic where the global trajectoy will be published
         self.goal_pose_sub = rospy.Subscriber("goal", PoseStamped, self.update_goal_pose, queue_size=1) #Topic where the global planner will read the goal pose
-        self.teste_pub = rospy.Publisher("teste", PoseStamped, queue_size=1)
-        
-        #TF listener
+        #self.teste_pub = rospy.Publisher("teste", PoseStamped, queue_size=1)
 
         #Defining the pose variable of the robot
         self.cur_pose = PoseStamped()
@@ -57,7 +55,7 @@ class GlobalPlanner:
 
         num_points = 10 #Number of poses of the path
 
-        self.teste_pub.publish(self.cur_pose)
+        #self.teste_pub.publish(self.cur_pose)
 
         cur_pose_copy = self.cur_pose #Assuring that the base_link pose will not change while the creation of the trajectory
 
@@ -85,8 +83,6 @@ class GlobalPlanner:
         
         #Publishing the linear path
         self.path_pub.publish(path)
-
-
 
 if __name__ == "__main__":
     rospy.init_node("global_planner_node")
