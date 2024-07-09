@@ -91,6 +91,10 @@ private:
     double vel_linear_y = 0.0;
     double vel_angular_z = 0.0;
 
+    double base_vel_linear_x = 0.0;
+    double base_vel_linear_y = 0.0;
+    double base_vel_angular_z = 0.0;
+
     double vel_linear_x_to_esp = 0.0;
     double vel_linear_y_to_esp = 0.0;
     double vel_angular_z_to_esp = 0.0;

@@ -84,6 +84,10 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
                             vel_linear_x = (total_x_displacement - total_x_displacement_old)/(time_stamp-time_stamp_old);
                             vel_linear_y = (total_y_displacement - total_y_displacement_old)/(time_stamp-time_stamp_old);
                             vel_angular_z = (total_theta_displacement - total_theta_displacement_old)/(time_stamp-time_stamp_old);
+                            
+                            base_vel_linear_x = cos(total_theta_displacement)*vel_linear_x + sin(total_theta_displacement)*vel_linear_y;
+                            base_vel_linear_y = -sin(total_theta_displacement)*vel_linear_x + cos(total_theta_displacement)*vel_linear_y;
+                            base_vel_angular_z = vel_angular_z;
 
                             i2c_master.set_write(); //preparing for using non blocking functions
                             break;
@@ -138,6 +142,10 @@ void RobotHWInterface::calculate_speed(){
             vel_linear_y = (total_y_displacement - total_y_displacement_old)/(time_stamp-time_stamp_old);
             vel_angular_z = (total_theta_displacement - total_theta_displacement_old)/(time_stamp-time_stamp_old);
 
+            base_vel_linear_x = cos(total_theta_displacement)*vel_linear_x + sin(total_theta_displacement)*vel_linear_y;
+            base_vel_linear_y = -sin(total_theta_displacement)*vel_linear_x + cos(total_theta_displacement)*vel_linear_y;
+            base_vel_angular_z = vel_angular_z;
+
             }
         //else continue
 
@@ -167,9 +175,14 @@ void RobotHWInterface::write_data(){
 
 void RobotHWInterface::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg) {
 
-    vel_linear_x_to_esp  =  msg->linear.x;
-    vel_linear_y_to_esp  =  msg->linear.y;
+    vel_linear_x_to_esp  =  cos(total_theta_displacement)*msg->linear.x -sin(total_theta_displacement)*msg->linear.y;
+    vel_linear_y_to_esp  =  sin(total_theta_displacement)*msg->linear.x + cos(total_theta_displacement)*msg->linear.y;
     vel_angular_z_to_esp =  msg->angular.z;
+
+    //ou simplismente
+    //vel_linear_x_to_esp = msg->linear.x;
+    //vel_linear_y_to_esp = msg->linear.y;
+    //vel_angular_z_to_esp =  msg->angular.z;
 
     // Reinicia o temporizador cada vez que um comando é recebido
     command_timeout_.stop();
@@ -235,9 +248,9 @@ void RobotHWInterface::updateOdometry() {
     odom.pose.pose.orientation = odom_quat;
 
     odom.child_frame_id = "base_link";
-    odom.twist.twist.linear.x = vel_linear_x;
-    odom.twist.twist.linear.y = vel_linear_y;
-    odom.twist.twist.angular.z = vel_angular_z;
+    odom.twist.twist.linear.x = base_vel_linear_x;
+    odom.twist.twist.linear.y = base_vel_linear_y;
+    odom.twist.twist.angular.z = base_vel_angular_z;
 
     odom_pub.publish(odom);
 
@@ -280,6 +293,10 @@ void RobotHWInterface::ackermann_inverse(){
     tan_phi = mapTangent((vel_angular_z_to_esp*wheel_separation_lenght*cos(total_theta_displacement))/(vel_linear_x_to_esp));
 
     v_center = mapSpeed(vel_linear_x_to_esp/cos(total_theta_displacement));
+
+    //ou simplesmente
+    //v_center = vy_base;
+    //tan_phi = (vel_angular_z_to_esp*wheel_separation_lenght)/v_center;
 
     left_vel = ((v_center*tan_phi)/wheel_separation_lenght)*((wheel_separation_lenght/tan_phi) - (wheel_separation_width/2));
     right_vel = ((v_center*tan_phi)/wheel_separation_lenght)*((wheel_separation_lenght/tan_phi) + (wheel_separation_width/2));
