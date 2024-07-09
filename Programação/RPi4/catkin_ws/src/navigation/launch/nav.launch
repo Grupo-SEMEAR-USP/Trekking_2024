@@ -1,10 +1,10 @@
 <launch>
     <!-- Running map server -->
     <arg name="map_file" default="$(find navigation)/maps_generated/map.yaml"/>
-    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
 
     <!-- Running the global planner -->
-    <node name="global_planner_node" pkg="navigation" type="global_planner.py" output="screen"/>
+    <!-- <node name="global_planner_node" pkg="navigation" type="global_planner.py" output="screen"/> -->
 
 
 </launch>
