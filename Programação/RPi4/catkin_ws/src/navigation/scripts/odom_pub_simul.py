@@ -9,6 +9,7 @@ class OdometryClass:
         self.vehicle_name = rospy.get_param('~vehicle_name', 'ackermann_vehicle')
         self.global_frame_id = rospy.get_param('~global_frame_id', 'odom')
         self.odom_publisher = rospy.Publisher('/odom', Odometry, queue_size=1)
+        self.odom2_publisher = rospy.Publisher('path_planner/odom', Odometry, queue_size=1)
         rospy.Subscriber('/gazebo/model_states', ModelStates, self.update_odom_msg, self.vehicle_name) #Gets the info of Pose and Twist from this topic, directly from gazebo
 
         self.vehicle_index = 0 #It's the correct index of the robot in the ModelStates msg
@@ -33,6 +34,7 @@ class OdometryClass:
             self.odom_msg.header.stamp = rospy.Time.now() #Updating the time stamps of the odom msg
 
             self.odom_publisher.publish(self.odom_msg) #Publishing the odometry message into the topic /odom
+            self.odom2_publisher.publish(self.odom_msg) #Used by the path planner
 
             self.rate.sleep()
 
