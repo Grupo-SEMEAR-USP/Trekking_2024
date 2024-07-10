@@ -5,7 +5,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
-#include <std_msgs/Empty.h>
 
 
 using namespace teb_local_planner; // it is ok here to import everything for testing purposes
@@ -21,7 +20,6 @@ boost::shared_ptr< dynamic_reconfigure::Server<TebLocalPlannerReconfigureConfig>
 ros::Subscriber custom_obst_sub;
 ros::Subscriber via_points_sub;
 ros::Subscriber clicked_points_sub;
-ros::Subscriber erase_via_points_sub;
 std::vector<ros::Subscriber> obst_vel_subs;
 unsigned int no_fixed_obstacles;
 
@@ -33,7 +31,6 @@ void CB_publishCycle(const ros::TimerEvent& e);
 void CB_reconfigure(TebLocalPlannerReconfigureConfig& reconfig, uint32_t level);
 void CB_clicked_points(const geometry_msgs::PointStampedConstPtr& point_msg);
 void CB_via_points(const nav_msgs::Path::ConstPtr& via_points_msg);
-void CB_erase_via_points(const std_msgs::Empty::ConstPtr& msg);
 
 void CB_goal(const geometry_msgs::PoseStamped::ConstPtr& msg);
 void CB_odom(const nav_msgs::Odometry::ConstPtr& msg);
@@ -59,7 +56,6 @@ int main( int argc, char** argv )
   //--- Publishers and Subscribers ---
   clicked_points_sub = n.subscribe("/clicked_point", 5, CB_clicked_points); // setup callback for clicked points (in rviz) that are considered as via-points
   via_points_sub = n.subscribe("via_points", 1, CB_via_points); // setup callback for via-points (callback overwrites previously set via-points)
-  erase_via_points_sub = n.subscribe("erase_via_points", 1, CB_erase_via_points);  //setup callback for erasing via_points 
   
   ros::Subscriber goal_pose_sub = n.subscribe("goal", 1, CB_goal); //subscribing to the goal topic to get the goal pose 
   ros::Subscriber odom_sub = n.subscribe("/odom", 1, CB_odom); //subscribing to the odom topic to get robot's current pose
@@ -155,10 +151,4 @@ void CB_via_points(const nav_msgs::Path::ConstPtr& via_points_msg)
   {
     via_points.emplace_back(pose.pose.position.x, pose.pose.position.y);
   }
-}
-
-void CB_erase_via_points(const std_msgs::Empty::ConstPtr& msg)
-{    
-  via_points.pop_back();
-  ROS_INFO("Via points erased.");
 }

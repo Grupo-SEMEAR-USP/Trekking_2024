@@ -31,7 +31,6 @@ class PathPublisher:
         self.run_node()
 
     def update_move_status(self, msg): #Callback function to the move_status topic
-        rospy.loginfo("OI URUGUAI")
         self.move_status.data = msg.data
 
     def read_path_from_disk(self):
@@ -42,23 +41,17 @@ class PathPublisher:
         else:
             rospy.logerr(f"File {self.file_path} does not exist")
 
-    def publish_path(self, index):
-        if len(self.path_data) > 0:
-            self.path_pub.publish(self.path_data[index])
-            #rospy.loginfo("Path data published")
-        else:
-            rospy.logerr("No path data to publish")
     
     def run_node(self):
         while not rospy.is_shutdown():
             #Updating the path we are following according to move_status flag
             if (self.move_status.data and self.current_path_index < len(self.path_data)): 
-                rospy.loginfo("OI BRASIL")
                 self.current_path_index += 1
                 self.move_status.data = False 
                 self.move_status_pub.publish(self.move_status) #Updating the move status so the controller can see and resume its work
 
-            self.path_pub.publish(self.path_data[self.current_path_index]) #Publishing the current path
+            if (self.current_path_index <= len(self.path_data)):
+                self.path_pub.publish(self.path_data[self.current_path_index]) #Publishing the current path
 
             self.rate.sleep()
 

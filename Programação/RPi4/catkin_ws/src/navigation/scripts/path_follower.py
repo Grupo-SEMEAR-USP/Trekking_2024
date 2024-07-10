@@ -27,16 +27,6 @@ vx_limit = True
 def get_distance(p1, p2):
     return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
-def init_variables():
-    wp_index = 1
-    pre_beta = 0
-    pre_cte = 0
-    pre_time = 0
-    seq = 0
-    start_time = rospy.Time()
-    yaw_rate_limit = True
-    vx_limit = True
-
 def odom_callback(odom_msg):
     global subscribed_path, wp_index, pre_beta, pre_cte, pre_time, seq, end_time, start_time
     if len(subscribed_path.poses) != 0 and not status.data:
