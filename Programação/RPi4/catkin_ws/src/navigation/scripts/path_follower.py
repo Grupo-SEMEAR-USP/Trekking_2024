@@ -127,7 +127,7 @@ if __name__ == '__main__':
     status.data = False #In the beggining, the robot won't be in the goal_pose
 
     cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-    rospy.Subscriber('/plan', Path, path_callback)
+    rospy.Subscriber('path_planner/local_plan', Path, path_callback)
     rospy.Subscriber('/odom', Odometry, odom_callback, queue_size=1)
 
     rate = rospy.Rate(10)

@@ -19,8 +19,8 @@ class   TFClass:
         self.t_map_odom.header.stamp = rospy.Time.now()
         self.t_map_odom.header.frame_id = "/map"
         self.t_map_odom.child_frame_id = "/odom"
-        self.t_map_odom.transform.translation.x = 0.0
-        self.t_map_odom.transform.translation.y = 0.0
+        self.t_map_odom.transform.translation.x = 15
+        self.t_map_odom.transform.translation.y = 15
         self.t_map_odom.transform.translation.z = 0.0
         self.t_map_odom.transform.rotation.x = 0.0
         self.t_map_odom.transform.rotation.y = 0.0
