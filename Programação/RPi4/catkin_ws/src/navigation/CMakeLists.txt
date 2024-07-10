@@ -166,6 +166,8 @@ catkin_install_python(PROGRAMS
   scripts/cmd_vel_to_ackermann_drive.py
   scripts/tf_publisher.py
   scripts/global_planner.py
+  scripts/path_saver.py
+  scripts/path_reader.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

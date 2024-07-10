@@ -6,5 +6,7 @@
     <!-- Running the global planner -->
     <!-- <node name="global_planner_node" pkg="navigation" type="global_planner.py" output="screen"/> -->
 
+    <!-- Running the path planner -->
+    <include file="$(find teb_local_planner)/launch/path_planner.launch"/>
 
 </launch>

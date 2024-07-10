@@ -49,6 +49,7 @@
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
   <depend>visualization_msgs</depend>
+  <depend>ackermann_vehicle_description</depend>
 
   <export>
     <nav_core plugin="${prefix}/teb_local_planner_plugin.xml"/>

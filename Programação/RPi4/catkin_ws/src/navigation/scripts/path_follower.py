@@ -6,6 +6,7 @@ from std_msgs.msg import Header
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
 import math
 import numpy as np
 import tf
@@ -28,7 +29,7 @@ def get_distance(p1, p2):
 
 def odom_callback(odom_msg):
     global subscribed_path, wp_index, pre_beta, pre_cte, pre_time, seq, end_time, start_time
-    if len(subscribed_path.poses) != 0:
+    if len(subscribed_path.poses) != 0 and not status.data:
         # Robot's current X, Y point
         current_point = np.array([odom_msg.pose.pose.position.x, odom_msg.pose.pose.position.y])
 
@@ -51,6 +52,10 @@ def odom_callback(odom_msg):
                 end_time = rospy.Time.now()
                 rospy.loginfo((end_time - start_time).to_sec())
                 rospy.signal_shutdown("Path following finish")
+                status.data = True 
+                move_status_pub.publish(status) #Signaling that the movement has stopped
+                pass
+                
 
         current_wp = np.array([subscribed_path.poses[wp_index-1].pose.position.x, subscribed_path.poses[wp_index-1].pose.position.y])
         next_wp = np.array([subscribed_path.poses[wp_index].pose.position.x, subscribed_path.poses[wp_index].pose.position.y])
@@ -106,8 +111,17 @@ def path_callback(path_msg):
     global subscribed_path
     subscribed_path = path_msg
 
+def update_move_status(msg):
+    status.data = msg.data
+
 if __name__ == '__main__':
     rospy.init_node('path_follower', anonymous=True, disable_signals=True)
+
+    move_status_pub = rospy.Publisher('path_follower/move_status', Bool, queue_size=1) #True will be published when the robot achieves its goal pose
+    move_status_sub = rospy.Subscriber('path_follower/move_status', Bool, update_move_status, queue_size=1)
+    status = Bool()
+    status.data = False #In the beggining, the robot won't be in the goal_pose
+
     cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     rospy.Subscriber('path_planner/local_plan', Path, path_callback)
     rospy.Subscriber('/odom', Odometry, odom_callback, queue_size=1)
