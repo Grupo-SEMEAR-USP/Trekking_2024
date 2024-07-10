@@ -13,10 +13,10 @@ class PathPublisher:
         self.move_status_pub = rospy.Publisher("path_follower/move_status", Bool, queue_size=1)
         self.path_data = []
 
-        self.rate = rospy.Rate(1)
+        self.rate = rospy.Rate(10)
 
-        self.current_path = 0
-        self.move_status = Bool
+        self.current_path_index = 0
+        self.move_status = Bool()
         self.move_status.data = False
 
         self.files_names = ["path_1.pkl", "path_2.pkl"]#, "path_3.pkl"]
@@ -31,6 +31,7 @@ class PathPublisher:
         self.run_node()
 
     def update_move_status(self, msg): #Callback function to the move_status topic
+        rospy.loginfo("OI URUGUAI")
         self.move_status.data = msg.data
 
     def read_path_from_disk(self):
@@ -44,19 +45,20 @@ class PathPublisher:
     def publish_path(self, index):
         if len(self.path_data) > 0:
             self.path_pub.publish(self.path_data[index])
-            rospy.loginfo("Path data published")
+            #rospy.loginfo("Path data published")
         else:
             rospy.logerr("No path data to publish")
     
     def run_node(self):
         while not rospy.is_shutdown():
             #Updating the path we are following according to move_status flag
-            if (self.move_status.data and self.current_path < len(self.path_data)): 
-                self.current_path += 1
-                self.move_status.data = False
+            if (self.move_status.data and self.current_path_index < len(self.path_data)): 
+                rospy.loginfo("OI BRASIL")
+                self.current_path_index += 1
+                self.move_status.data = False 
                 self.move_status_pub.publish(self.move_status) #Updating the move status so the controller can see and resume its work
 
-            self.publish_path(self.current_path) #Publishing the current path
+            self.path_pub.publish(self.path_data[self.current_path_index]) #Publishing the current path
 
             self.rate.sleep()
 
