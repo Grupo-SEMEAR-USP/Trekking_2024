@@ -216,4 +216,10 @@ add_executable (hw_interface
   #include/initializers.hpp
 )
 
+add_executable (test_node
+  src/node_test.cpp
+)
+
 target_link_libraries(hw_interface PUBLIC bsc_controller ${catkin_LIBRARIES})
+
+target_link_libraries(test_node ${catkin_LIBRARIES})

@@ -31,7 +31,7 @@ void core1functions(void *params){
 
         xSemaphoreTake(xSemaphore_getRosSpeed,portMAX_DELAY);    
         global_ros_angular_speed_left=-10.0;
-        global_ros_angular_speed_right=-5.0;
+        global_ros_angular_speed_right=-10.0;
         xSemaphoreGive(xSemaphore_getRosSpeed);
 
         vTaskDelay(pdMS_TO_TICKS(I2C_DELAY));

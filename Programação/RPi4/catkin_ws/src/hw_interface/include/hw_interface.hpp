@@ -2,6 +2,7 @@
 
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
+#include <ackermann_msgs/AckermannDrive.h>
 //#include "robot_control/velocity_data.h"
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Quaternion.h>
@@ -26,7 +27,7 @@ public:
     void read_data();
     void ackermann_inverse();
     void calculate_speed();
-    void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg);
+    void cmdVelCallback(const ackermann_msgs::AckermannDrive::ConstPtr& msg);
     void commandTimeoutCallback(const ros::TimerEvent&); // Callback para o timeout
     void updateWheelSpeedForDeceleration(); // Desaceleração
     double mapSpeed(double v_input); // Normalização da velocidade
@@ -63,7 +64,7 @@ private:
     // used for calculating  the inverse ackermann kinematics
     double wheel_radius; // Raio das rodas
     double wheel_separation_width;
-    double wheel_separation_lenght;
+    double wheel_separation_length;
     double front_four_bar_separation;
     double deceleration_rate; // Taxa de desaceleração
     double vcenter_max_speed; // Velocidade máxima
@@ -95,9 +96,13 @@ private:
     double base_vel_linear_y = 0.0;
     double base_vel_angular_z = 0.0;
 
-    double vel_linear_x_to_esp = 0.0;
-    double vel_linear_y_to_esp = 0.0;
-    double vel_angular_z_to_esp = 0.0;
+    //double base_vel_linear_x_to_esp = 0.0;
+    //double base_vel_linear_y_to_esp = 0.0;
+    //double base_vel_angular_z_to_esp = 0.0;
+
+    double acker_steering_angle = 0.0;
+    double acker_central_v_speed = 0.0;
+
 
     ros::Time current_time;
     tf::TransformBroadcaster odom_broadcaster;

@@ -1,0 +1,24 @@
+    // Carregar parâmetros do arquivo .yaml
+
+    wheel_radius = 0.03;
+    wheel_separation_width =0.25;
+    wheel_separation_lenght =0.26;
+    front_four_bar_separation = 0.21;
+    deceleration_rate = 0.4;
+    vcenter_max_speed = 0.8;
+    vcenter_min_speed =-0.8;
+
+    link_a2 = 0.02;
+    link_b2 =  0.08;
+    link_c = 0.0198;
+    link_d2 = 0.0935;
+    phi_2_o = 2.100;
+    phi_tangent_lower_limit = -0.4262;
+    phi_tangent_upper_limit = 0.4262;
+    
+    
+    std::cout<<total_x_displacement<<std::endl;
+                            std::cout<<total_y_displacement<<std::endl;
+                            std::cout<<total_theta_displacement<<std::endl;
+                            std::cout<<time_stamp<<std::endl;
+                            std::cout<<"corno"<<std::endl;

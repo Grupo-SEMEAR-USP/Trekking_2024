@@ -3,6 +3,7 @@
 #include "global_variables.h"
 
 void i2c_write(uint8_t *tx_data,double *total_x_displacement,double *total_y_displacement,double *total_angular_displacement,uint32_t *time_stamp){
+    
     xSemaphoreTake(xSemaphore_getSpeed,portMAX_DELAY);
     
     //variables for storing displacement in micrometers to send
@@ -21,16 +22,20 @@ void i2c_write(uint8_t *tx_data,double *total_x_displacement,double *total_y_dis
     xSemaphoreGive(xSemaphore_getSpeed);
 
     i2c_slave_write_buffer(I2C_PORT,tx_data,TX_MENSAGE_SIZE,TIMEOUT_MS_WRITE / portTICK_RATE_MS);
-
 }
 
 void i2c_read(uint8_t *rx_data,float *angular_speed_left,float *angular_speed_right,float *servo_angle){
     xSemaphoreTake(xSemaphore_getRosSpeed,portMAX_DELAY);
-    if(i2c_slave_read_buffer(I2C_PORT,rx_data,RX_MENSAGE_SIZE,TIMEOUT_MS_READ / portTICK_RATE_MS) > 0){
     
+    if(i2c_slave_read_buffer(I2C_PORT,rx_data,RX_MENSAGE_SIZE,TIMEOUT_MS_READ / portTICK_RATE_MS) > 0){
         memcpy(angular_speed_left, rx_data,4);
         memcpy(angular_speed_right, rx_data+4,4);
         memcpy(servo_angle, rx_data+8,4);
+
+        //printf("left: ");
+        //printf("left: %f",*angular_speed_left);
+        //printf("right: %f",*angular_speed_right);
+        //printf("servo: %f",*servo_angle);
     }
     xSemaphoreGive(xSemaphore_getRosSpeed);
 }

@@ -1,6 +1,6 @@
 fourbar_geometry:
-  link_a2: 0.02
-  link_b2: 0.08
+  link_a2: 0.0165
+  link_b2: 0.09
   link_c: 0.0198
   link_d2: 0.0935
   phi_2_o: 2.1002

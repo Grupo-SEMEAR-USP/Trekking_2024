@@ -1,6 +1,7 @@
 #include <ros/ros.h>
-#include <geometry_msgs/Twist.h>
+//#include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Joy.h>
+#include <ackermann_msgs/AckermannDrive.h>
 
 
 class TeleopJoy
@@ -26,12 +27,17 @@ TeleopJoy::TeleopJoy()//:
   //angular_(2)
 {
 
+  joy_scale = 0.349;
+  left_scale_trigger = 1.5;
+  right_scale_trigger = 1.5;
+
   nh_.param("joy_params/joy_scale", joy_scale);
   nh_.param("joy_params/left_scale_trigger", left_scale_trigger);
   nh_.param("joy_params/right_scale_trigger", right_scale_trigger);
 
 
-  vel_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+
+  vel_pub_ = nh_.advertise<ackermann_msgs::AckermannDrive>("cmd_vel", 1);
 
 
   joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &TeleopJoy::joyCallback, this);
@@ -40,10 +46,10 @@ TeleopJoy::TeleopJoy()//:
 
 void TeleopJoy::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
-  geometry_msgs::Twist twist;
-  twist.angular.z = a_scale_*joy->axes[angular_];
-  twist.linear.x = l_scale_*joy->axes[linear_];
-  vel_pub_.publish(twist);
+  static ackermann_msgs::AckermannDrive acker_drive;
+  acker_drive.steering_angle = joy_scale*joy->axes[0];
+  acker_drive.speed = (-right_scale_trigger*((joy->axes[5] + 1)/2) )+(left_scale_trigger*((joy->axes[2] + 1)/2));
+  vel_pub_.publish(acker_drive);
 }
 
 

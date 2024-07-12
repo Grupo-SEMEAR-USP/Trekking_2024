@@ -14,14 +14,16 @@ RobotHWInterface::RobotHWInterface(ros::NodeHandle& nh, i2c_config_t& i2c_config
     // Publishes odometry
     odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 50);
 
+
+
     // Carregar parâmetros do arquivo .yaml
-    nh.getParam("robot_control/wheel_radius", wheel_radius);
-    nh.getParam("robot_control/wheel_separation_width", wheel_separation_width);
-    nh.getParam("robot_control/wheel_separation_lenght", wheel_separation_lenght);
-    nh.getParam("robot_control/front_four_bar_separation", front_four_bar_separation);
-    nh.getParam("robot_control/deceleration_rate", deceleration_rate);
-    nh.getParam("robot_control/vcenter_max_speed", vcenter_max_speed);
-    nh.getParam("robot_control/vcenter_min_speed", vcenter_min_speed);
+    nh.getParam("robot_geometry/wheel_radius", wheel_radius);
+    nh.getParam("robot_geometry/wheel_separation_width", wheel_separation_width);
+    nh.getParam("robot_geometry/wheel_separation_length", wheel_separation_length);
+    nh.getParam("robot_geometry/front_four_bar_separation", front_four_bar_separation);
+    nh.getParam("robot_geometry/deceleration_rate", deceleration_rate);
+    nh.getParam("robot_geometry/vcenter_max_speed", vcenter_max_speed);
+    nh.getParam("robot_geometry/vcenter_min_speed", vcenter_min_speed);
 
     nh.getParam("fourbar_geometry/link_a2", link_a2);
     nh.getParam("fourbar_geometry/link_b2", link_b2);
@@ -44,20 +46,21 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
     i2c_master.i2c_start_bsc();
 
     while(true){
-
+        
+        //ROS_INFO("xxxx controller");
         if(i2c_master.i2c_blocking_read("espFeliz")){
             memcpy(&total_x_displacement_intermed, i2c_master.slave_devices["espFeliz"].rx_buffer,4);
             memcpy(&total_y_displacement_intermed, (i2c_master.slave_devices["espFeliz"].rx_buffer)+4,4);
             memcpy(&total_theta_displacement_intermed, (i2c_master.slave_devices["espFeliz"].rx_buffer)+8,4);
             memcpy(&time_stamp_intermed, (i2c_master.slave_devices["espFeliz"].rx_buffer)+12,4);
-
+            ROS_INFO("xxxx controller");
             if(time_stamp_intermed == 0x7fffffff){
                 throw std::runtime_error("Esp32 is in Error state!");
             }
             else{
                 total_x_displacement = (static_cast<double>(total_x_displacement_intermed))/1000000;
                 total_y_displacement = (static_cast<double>(total_y_displacement_intermed))/1000000;
-                total_theta_displacement = (static_cast<double>(total_x_displacement_intermed))/1000;
+                total_theta_displacement = (static_cast<double>(total_theta_displacement_intermed))/1000;
                 time_stamp = time_stamp_intermed;
 
                 if(i2c_master.i2c_blocking_read("espFeliz")){
@@ -78,7 +81,7 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
                         if(time_stamp_intermed != time_stamp_old){
                             total_x_displacement = (static_cast<double>(total_x_displacement_intermed))/1000000;
                             total_y_displacement = (static_cast<double>(total_y_displacement_intermed))/1000000;
-                            total_theta_displacement = (static_cast<double>(total_x_displacement_intermed))/1000;
+                            total_theta_displacement = (static_cast<double>(total_theta_displacement_intermed))/1000;
                             time_stamp = time_stamp_intermed;
 
                             vel_linear_x = (total_x_displacement - total_x_displacement_old)/(time_stamp-time_stamp_old);
@@ -88,6 +91,18 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
                             base_vel_linear_x = cos(total_theta_displacement)*vel_linear_x + sin(total_theta_displacement)*vel_linear_y;
                             base_vel_linear_y = -sin(total_theta_displacement)*vel_linear_x + cos(total_theta_displacement)*vel_linear_y;
                             base_vel_angular_z = vel_angular_z;
+
+                            //std::cout<<total_x_displacement<<" ";
+                            //std::cout<<total_y_displacement<<" ";
+                            //std::cout<<total_theta_displacement<<" ";
+                            //std::cout<<time_stamp<<std::endl;
+
+                            //ROS_INFO("%F ", total_x_displacement);
+                            //ROS_INFO("%F ", total_y_displacement);
+                            //ROS_INFO("%F ", total_theta_displacement);
+                            //ROS_INFO("%d ", time_stamp);
+                            
+
 
                             i2c_master.set_write(); //preparing for using non blocking functions
                             break;
@@ -146,6 +161,11 @@ void RobotHWInterface::calculate_speed(){
             base_vel_linear_y = -sin(total_theta_displacement)*vel_linear_x + cos(total_theta_displacement)*vel_linear_y;
             base_vel_angular_z = vel_angular_z;
 
+            //ROS_INFO("%F ", total_x_displacement);
+            //ROS_INFO("%F ", total_y_displacement);
+            //ROS_INFO("%F ", total_theta_displacement);
+            //ROS_INFO("%d ", time_stamp);
+
             }
         //else continue
 
@@ -173,11 +193,14 @@ void RobotHWInterface::write_data(){
     if(!(i2c_master.i2c_write("espFeliz"))); //continue;
 }
 
-void RobotHWInterface::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& msg) {
+void RobotHWInterface::cmdVelCallback(const ackermann_msgs::AckermannDrive::ConstPtr& msg) {
 
-    vel_linear_x_to_esp  =  cos(total_theta_displacement)*msg->linear.x -sin(total_theta_displacement)*msg->linear.y;
-    vel_linear_y_to_esp  =  sin(total_theta_displacement)*msg->linear.x + cos(total_theta_displacement)*msg->linear.y;
-    vel_angular_z_to_esp =  msg->angular.z;
+    //vel_linear_x_to_esp  =  cos(total_theta_displacement)*msg->linear.x -sin(total_theta_displacement)*msg->linear.y;
+    //vel_linear_y_to_esp  =  sin(total_theta_displacement)*msg->linear.x + cos(total_theta_displacement)*msg->linear.y;
+    //vel_angular_z_to_esp =  msg->angular.z;
+
+    acker_steering_angle  =  msg->steering_angle;
+    acker_central_v_speed  =  msg->speed;
 
     //ou simplismente
     //vel_linear_x_to_esp = msg->linear.x;
@@ -290,25 +313,31 @@ void RobotHWInterface::ackermann_inverse(){
     static double right_vel;
     static double v_center;
     
-    tan_phi = mapTangent((vel_angular_z_to_esp*wheel_separation_lenght*cos(total_theta_displacement))/(vel_linear_x_to_esp));
+    //tan_phi = mapTangent((base_vel_angular_z_to_esp*wheel_separation_length*cos(total_theta_displacement))/(vel_linear_x_to_esp));
 
-    v_center = mapSpeed(vel_linear_x_to_esp/cos(total_theta_displacement));
+    //v_center = mapSpeed(vel_linear_x_to_esp/cos(total_theta_displacement));
 
     //ou simplesmente
-    //v_center = vy_base;
-    //tan_phi = (vel_angular_z_to_esp*wheel_separation_lenght)/v_center;
+    v_center = acker_central_v_speed;//base_vel_linear_y_to_esp;
+    //if(base_vel_linear_y_to_esp < 1.7*)
+    //tan_phi = (vel_angular_z_to_esp*wheel_separation_length)/v_center;
 
-    left_vel = ((v_center*tan_phi)/wheel_separation_lenght)*((wheel_separation_lenght/tan_phi) - (wheel_separation_width/2));
-    right_vel = ((v_center*tan_phi)/wheel_separation_lenght)*((wheel_separation_lenght/tan_phi) + (wheel_separation_width/2));
+    //left_vel = (wheel_separation_length)*((wheel_separation_length*v_center) - (((wheel_separation_width*wheel_separation_length)*wheel_separation_width)/2));
+    //right_vel = (wheel_separation_length)*((wheel_separation_length*v_center) + (((base_vel_angular_z_to_esp*wheel_separation_length)*wheel_separation_width)/2));
 
-    //left_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_lenght))*((wheel_separation_lenght/tan_phi) - (wheel_separation_width/2));
-    //right_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_lenght))*((wheel_separation_lenght/tan_phi) + (wheel_separation_width/2));
+    //left_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_length))*((wheel_separation_length/tan_phi) - (wheel_separation_width/2));
+    //right_vel = ((vel_linear_x_to_esp*tan_phi)/(cos(total_theta_displacement)*wheel_separation_length))*((wheel_separation_length/tan_phi) + (wheel_separation_width/2));
     
-    phi = atan(tan_phi);
+    phi = acker_steering_angle;
+
+    tan_phi = tan(phi);
     sin_phi  = sin(phi);
     cos_phi  = cos(phi);
 
-    phi_right = atan((2*wheel_separation_lenght*sin_phi)/(2*wheel_separation_lenght*cos_phi + wheel_separation_width*sin_phi));
+    left_vel = v_center - ((((v_center*tan_phi)/wheel_separation_length)*wheel_separation_width)/2);
+    right_vel = v_center + ((((v_center*tan_phi)/wheel_separation_length)*wheel_separation_width)/2);
+
+    phi_right = atan((2*wheel_separation_length*sin_phi)/(2*wheel_separation_length*cos_phi + wheel_separation_width*sin_phi));
 
     phi_2 = phi_2_o-phi_right;
 
@@ -323,15 +352,22 @@ void RobotHWInterface::ackermann_inverse(){
     sin_q2_sol1 = (-eq_b + sqrt(eq_b*eq_b - 4*eq_a*eq_c))/(2*eq_a);
     sin_q2_sol2 = (-eq_b - sqrt(eq_b*eq_b - 4*eq_a*eq_c))/(2*eq_a);
 
+    //ROS_INFO("%F ",wheel_separation_length);
+    //ROS_INFO("%F ",wheel_separation_width );
+    //ROS_INFO("%F ",sin_phi);
+    //ROS_INFO("%F ",cos_phi);
+
+   //ROS_INFO("%F ",phi_2_o);
+
     cos_q2_sol1 = (W_2/K_2) - (Z_2/K_2)*sin_q2_sol1;
     cos_q2_sol2 = (W_2/K_2) - (Z_2/K_2)*sin_q2_sol2;
 
     q2_sol1 = atan2(sin_q2_sol1,cos_q2_sol1);
     q2_sol2 = atan2(sin_q2_sol2,cos_q2_sol2);
+    //1.222 70 - 120 //130
+    if(1.100 <= q2_sol1 && q2_sol1 <= 2.269) q2_final = q2_sol1; 
 
-    if(1.624 >= q2_sol1 && q2_sol1 <= 2.792) q2_final = q2_sol1; 
-
-    if(1.624 >= q2_sol2 && q2_sol2 <= 2.792) q2_final = q2_sol2; 
+    if(1.100 <= q2_sol2 && q2_sol2 <= 2.269) q2_final = q2_sol2; 
 
     //if(q2_lower_limit >= q2_sol1 && q2_sol1 <= q2_upper_limit) q2_final = q2_sol1; 
 
@@ -341,6 +377,16 @@ void RobotHWInterface::ackermann_inverse(){
     rear_left_wheel_speed = static_cast<float>(left_vel/wheel_radius);
     rear_right_wheel_speed = static_cast<float>(right_vel/wheel_radius);
     servo_angle = static_cast<float>(q2_final*(180.0/M_PI));
+
+    //ROS_INFO("%f ", rear_left_wheel_speed);
+    //ROS_INFO("%f ", rear_right_wheel_speed);
+    //ROS_INFO("%f ", servo_angle);
+    //ROS_INFO("%F ", q2_final);
+    //ROS_INFO("%F ", q2_sol1);
+    //ROS_INFO("%F ", q2_sol2);
+    //ROS_INFO("%F ", phi_2);
+
+    //ROS_INFO("%F ",link_c );
 
 }
 

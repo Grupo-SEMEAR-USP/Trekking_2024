@@ -6,6 +6,7 @@
 #include <string.h>
 #include <chrono>
 #include <cmath>
+//#include <cfloat>
 
 #define I2C_SLC_FREQUENCY 400000
 #define BSC_UNIT_0 0

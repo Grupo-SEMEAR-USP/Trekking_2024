@@ -99,6 +99,9 @@ void core0fuctions(void *params){
 
     //init interrupts
     interrupts_init();
+    //xTimerStart(
+    //monitor_encoder_pid_calc_timer_handle 
+    //,0);
 
     vTaskSuspend(NULL);
 
@@ -163,7 +166,7 @@ void monitor_encoder_pid_calc(void *params){
             local_ros_angular_speed_right,
             &pid_result_duty_right);
 
-        printf("vel_calc: %f rad/s vel ros: %f rad/s duty: %f\n",local_motor_angular_speed_left,local_ros_angular_speed_left,pid_result_duty_left);
+        //printf("vel_calc: %f rad/s vel ros: %f rad/s duty: %f\n",local_motor_angular_speed_left,local_ros_angular_speed_left,pid_result_duty_left);
         pwm_actuate(ESQ,pid_result_duty_left);
         pwm_actuate(DIR,pid_result_duty_right);
         iot_servo_write_angle(LEDC_LOW_SPEED_MODE, SERVO_PWM_CHANNEL, local_servo_angle);
