@@ -11,11 +11,16 @@ def convert_trans_rot_vel_to_steering_angle(v, omega, wheelbase):
     return 0
 
   radius = v / omega
-  return math.atan(wheelbase / radius)
+  phi = math.atan(wheelbase / radius) #steering angle of the left wheel
+
+  #Converting phi to the steering angle of the wheel in the center of the front axle (abstraction)
+  teta = math.atan((math.tan(phi) - 2*wheelbase)/(2*wheelbase + wheels_dist*math.tan(phi)))
+  return teta
 
 
 def cmd_callback(data):
   global wheelbase
+  global wheels_dist
   global ackermann_cmd_topic
   global frame_id
   global pub
@@ -50,7 +55,8 @@ if __name__ == '__main__':
         
     twist_cmd_topic = rospy.get_param('~twist_cmd_topic', '/cmd_vel') 
     ackermann_cmd_topic = rospy.get_param('~ackermann_cmd_topic', '/ackermann_cmd')
-    wheelbase = rospy.get_param('~wheelbase', 1.0)
+    wheelbase = rospy.get_param('~wheelbase', 0.260)
+    wheels_dist = rospy.get_param("~wheels_dist", 0.250)
     frame_id = rospy.get_param('~frame_id', 'odom')
     message_type = rospy.get_param('~message_type', 'ackermann_drive') # ackermann_drive or ackermann_drive_stamped
     

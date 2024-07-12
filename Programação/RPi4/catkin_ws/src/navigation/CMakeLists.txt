@@ -164,10 +164,12 @@ catkin_install_python(PROGRAMS
   scripts/odom_pub.py
   scripts/odom_pub_simul.py
   scripts/cmd_vel_to_ackermann_drive.py
+  scripts/cmd_vel_to_ackermann_drive_rod.py
   scripts/tf_publisher.py
   scripts/global_planner.py
   scripts/path_saver.py
   scripts/path_reader.py
+  scripts/odom_front.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

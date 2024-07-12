@@ -39,7 +39,7 @@ limitations under the License.
   <arg name="namespace" default="/"/>
   <arg name="cmd_timeout" default="0.5"/>
   <!-- <arg name="world_name" default="worlds/dımbasbos.world"/> --> 
-  <arg name="world_name" default="$(find ackermann_vehicle_gazebo)/worlds/newest.world"/>
+  <arg name="world_name" default="$(find ackermann_vehicle_gazebo)/worlds/4x4_test.world"/>
 
   <!-- Vehicle pose -->
   <arg name="x" default="0.0"/>
@@ -56,7 +56,7 @@ limitations under the License.
   <group ns="$(arg namespace)">
     <!-- Create the world. -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-      <arg name="world_name" value="$(arg world_name)"/>
+      <!--<arg name="world_name" value="$(arg world_name)"/>-->
     </include>
     
     <!-- Spawn the vehicle. -->
@@ -70,9 +70,10 @@ limitations under the License.
     <node name="controller_spawner" pkg="controller_manager" type="spawner"
           args="$(find ackermann_vehicle_gazebo)/config/Ackermann_robot_joint_ctrlr_params.yaml"/>
     -->
+    
     <node name="controller_spawner" pkg="controller_manager" type="spawner"
           args="$(find ackermann_vehicle_gazebo)/config/em_3905_joint_ctrlr_params.yaml"/>
-
+    
     <!--
     <node name="ackermann_controller" pkg="ackermann_vehicle_gazebo"
           type="ackermann_controller">
@@ -85,6 +86,6 @@ limitations under the License.
       <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
       <rosparam file="$(find ackermann_vehicle_gazebo)/config/em_3905_ackermann_ctrlr_params.yaml" command="load"/>
     </node>
-
+    
   </group>
 </launch>

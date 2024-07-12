@@ -62,7 +62,7 @@ int main( int argc, char** argv )
   erase_via_points_sub = n.subscribe("erase_via_points", 1, CB_erase_via_points);  //setup callback for erasing via_points 
   
   ros::Subscriber goal_pose_sub = n.subscribe("goal", 1, CB_goal); //subscribing to the goal topic to get the goal pose 
-  ros::Subscriber odom_sub = n.subscribe("/odom", 1, CB_odom); //subscribing to the odom topic to get robot's current pose
+  ros::Subscriber odom_sub = n.subscribe("/odom_front", 1, CB_odom); //subscribing to the odom topic to get robot's current pose
   
   // Setup visualization
   visual = TebVisualizationPtr(new TebVisualization(n, config));

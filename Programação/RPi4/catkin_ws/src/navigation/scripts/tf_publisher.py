@@ -6,6 +6,7 @@ import tf
 import tf2_ros
 import geometry_msgs.msg
 from nav_msgs.msg import Odometry
+from tf.transformations import quartenion_from_euler
 
 class   TFClass:
     def __init__(self): #Constructor of the class
@@ -19,13 +20,16 @@ class   TFClass:
         self.t_map_odom.header.stamp = rospy.Time.now()
         self.t_map_odom.header.frame_id = "/map"
         self.t_map_odom.child_frame_id = "/odom"
-        self.t_map_odom.transform.translation.x = 15
-        self.t_map_odom.transform.translation.y = 15
-        self.t_map_odom.transform.translation.z = 0.0
-        self.t_map_odom.transform.rotation.x = 0.0
+        self.t_map_odom.transform.translation.x = 10
+        self.t_map_odom.transform.translation.y = 10
+        self.t_map_odom.transform.translation.z = 0
+        
+        self.t_map_odom.transform.rotation = quartenion_from_euler(0, 0, 1.570709633)
+
+        '''self.t_map_odom.transform.rotation.x = 0.0
         self.t_map_odom.transform.rotation.y = 0.0
-        self.t_map_odom.transform.rotation.z = 0.0
-        self.t_map_odom.transform.rotation.w = 1.0
+        self.t_map_odom.transform.rotation.z = 1.570709633
+        self.t_map_odom.transform.rotation.w = 1.0'''
 
         #Defining the initial conditions of the transform between the odom and the base_link frames
         self.t = geometry_msgs.msg.TransformStamped()

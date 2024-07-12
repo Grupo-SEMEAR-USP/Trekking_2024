@@ -15,7 +15,7 @@
           <xacro:unless value="${preffix == 'front'}">
 
             <origin xyz="0.13691 0.00033 -0.0371" rpy="0 1.5708 0"/>
-            <parent link="base_link_rear"/>
+            <parent link="base_link"/>
 
           </xacro:unless>
 
@@ -40,7 +40,7 @@
           <xacro:unless value="${preffix == 'front'}">
 
             <origin xyz="-0.13691 0.00033 -0.0371" rpy="0 -1.5708 0"/>
-            <parent link="base_link_rear"/>
+            <parent link="base_link"/>
 
           </xacro:unless>
 
