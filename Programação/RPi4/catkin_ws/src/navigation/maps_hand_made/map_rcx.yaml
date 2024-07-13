@@ -1,6 +1,6 @@
 image: map_rcx.pgm
 resolution: 0.0148607374
-origin: [12.422, 13.080, 0.00]
+origin: [0.00, 0.00, 0.00]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196

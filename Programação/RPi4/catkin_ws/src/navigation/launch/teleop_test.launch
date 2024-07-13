@@ -10,7 +10,7 @@
     </node>
 
     <!-- Running map server -->
-    <arg name="map_file" default="$(find navigation)/maps_hand_made/map_rcx.yaml"/>
+    <arg name="map_file" default="$(find navigation)/maps_hand_made/map_test.yaml"/>
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
     
     <!--Loading the ackermann configuration launch file - TF's basicaly-->
