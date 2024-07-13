@@ -2,8 +2,8 @@
    <!-- Sem informações sensorias :( -->
 
    <!-- Odometria -->
-   <node pkg="navigation" type="odom_pub_simul.py" name="odom_node" output="screen"/>
-   <node pkg="navigation" type="odom_front.py" name="odom_front_node" output="screen"/>
+   <!-- Fornecida pelo hw_interface -->
+   <!--<node pkg="navigation" type="odom_front.py" name="odom_front_node" output="screen"/> -->
 
    <!-- EKF -->
    <!--<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
@@ -15,6 +15,6 @@
    <node pkg="navigation" type="tf_publisher.py" name="tf_node" output="screen"/>
 
    <!-- Node that converts Twist msgs from cmd_vel to AckermannDrive msgs, which are published in /ackermann_cmd -->
-   <node name="cmd_vel_converter_node" pkg="navigation" type="cmd_vel_to_ackermann_drive.py" output="screen"/>
+   <!--<node name="cmd_vel_converter_node" pkg="navigation" type="cmd_vel_to_ackermann_drive.py" output="screen"/>-->
 
 </launch>

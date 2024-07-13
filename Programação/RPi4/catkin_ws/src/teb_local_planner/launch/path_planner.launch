@@ -3,8 +3,8 @@
    	<node pkg="teb_local_planner" type="path_planner_node" name="path_planner" output="screen" />
 
 	<!-- RVIZ -->
-	<!--<param name="robot_description" command="$(find xacro)/xacro '$(find ackermann_vehicle_description)/robot/urdf/Ackermann_robot.urdf.xacro'"/>-->
-	<param name="robot_description" command="$(find xacro)/xacro '$(find ackermann_vehicle_description)/urdf/em_3905.urdf.xacro'"/>
+	<param name="robot_description" command="$(find xacro)/xacro '$(find ackermann_vehicle_description)/robot/urdf/Ackermann_robot.urdf.xacro'"/>
+	<!--<param name="robot_description" command="$(find xacro)/xacro '$(find ackermann_vehicle_description)/urdf/em_3905.urdf.xacro'"/>-->
 
   	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find ackermann_vehicle_description)/rviz/nav.rviz"/>
 

@@ -17,6 +17,11 @@ Visualization Manager:
     - Class: rviz/TF
       Name: TF
       Value: false
+    - Class: rviz/Map
+      Alpha: 0.7
+      Enabled: true
+      Name: Map
+      Topic: /map
   Global Options:
     Fixed Frame: map
     Frame Rate: 30

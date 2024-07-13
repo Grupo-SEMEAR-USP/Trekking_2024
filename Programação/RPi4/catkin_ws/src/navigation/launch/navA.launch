@@ -1,6 +1,6 @@
 <launch>
     <!-- Running map server -->
-    <arg name="map_file" default="$(find navigation)/maps_hand_made/mapa_rcx.yaml"/>
+    <arg name="map_file" default="$(find navigation)/maps_hand_made/map_rcx.yaml"/>
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
 
     <!-- Running the global planner -->

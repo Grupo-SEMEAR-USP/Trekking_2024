@@ -23,7 +23,7 @@ class   TFClass:
 
         self.t_map_odom.transform.rotation.x = 0.0
         self.t_map_odom.transform.rotation.y = 0.0
-        self.t_map_odom.transform.rotation.z = 0.0
+        self.t_map_odom.transform.rotation.z = 1.570709633
         self.t_map_odom.transform.rotation.w = 1.0
 
         #Defining the initial conditions of the transform between the odom and the base_link frames
@@ -39,10 +39,38 @@ class   TFClass:
         self.t.transform.rotation.z = 0.0
         self.t.transform.rotation.w = 1
 
+        #Defining virtual frames to help in some geometry calculations in the ackermann_controller node
+        #Left virtual frame
+        self.t_left = geometry_msgs.msg.TransformStamped()
+        self.t_left.header.stamp = rospy.Time.now()
+        self.t_left.header.frame_id = "base_link"
+        self.t_left.child_frame_id = "left_virtual_frame"
+        self.t_left.transform.translation.x = 0.10378 
+        self.t_left.transform.translation.y = -0.21397
+        self.t_left.transform.translation.z = -0.0371
+        self.t_left.transform.rotation.x = 0.0
+        self.t_left.transform.rotation.y = 0.0
+        self.t_left.transform.rotation.z = 0.0
+        self.t_left.transform.rotation.w = 1.0
+
+        #Right virtual frame
+        self.t_right = geometry_msgs.msg.TransformStamped()
+        self.t_right.header.stamp = rospy.Time.now()
+        self.t_right.header.frame_id = "base_link"
+        self.t_right.child_frame_id = "right_virtual_frame"
+        self.t_right.transform.translation.x = -0.10624 
+        self.t_right.transform.translation.y = -0.21396 
+        self.t_right.transform.translation.z = -0.0371
+        self.t_right.transform.rotation.x = 0.0
+        self.t_right.transform.rotation.y = 0.0
+        self.t_right.transform.rotation.z = 0.0
+        self.t_right.transform.rotation.w = 1.0
 
     def update_time_stamps(self): #Updates the time stamps of all frames
         self.t_map_odom.header.stamp = rospy.Time.now()
         self.t.header.stamp = rospy.Time.now()
+        self.t_left.header.stamp = rospy.Time.now()
+        self.t_right.header.stamp = rospy.Time.now()
         
 
     def update_tf(self, msg): #Callback function to the topic /odom
@@ -57,6 +85,8 @@ class   TFClass:
         #Broadcasting the transforms of all frames
         self.br.sendTransform(self.t_map_odom) #Updating the transform between the map and the odom frames
         self.br.sendTransform(self.t) #Updating the transform between odom and base_link
+        self.br.sendTransform(self.t_left) #Updating the transform between the base_link and the left virtual frame
+        self.br.sendTransform(self.t_right) #Updating the transform between the base_link and the right virtual frame
 
 if __name__ == '__main__':
     rospy.init_node('tf_pub_node')
