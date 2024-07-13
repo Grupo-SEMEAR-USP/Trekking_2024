@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
 
     ros::Rate rate(HW_IF_UPDATE_FREQ);
 
-    ros::AsyncSpinner spinner(4);
+    //ros::AsyncSpinner spinner(4);
     std::cout<<"Pós spinner";
 
-    spinner.start();
+    //spinner.start();
 
     std::cout<<"Pós spinner start";
 
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
         controller.ackermann_inverse();
         //wait
         controller.calculate_speed();
-        
+        ros::spinOnce();
         rate.sleep();
     }
 

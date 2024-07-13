@@ -364,10 +364,10 @@ void RobotHWInterface::ackermann_inverse(){
 
     q2_sol1 = atan2(sin_q2_sol1,cos_q2_sol1);
     q2_sol2 = atan2(sin_q2_sol2,cos_q2_sol2);
-    //1.222 70 - 120 //130
-    if(1.100 <= q2_sol1 && q2_sol1 <= 2.269) q2_final = q2_sol1; 
+    //1.222 70 - 120 //130 max 2.269
+    if(1.000 <= q2_sol1 && q2_sol1 <= 3) q2_final = q2_sol1; 
 
-    if(1.100 <= q2_sol2 && q2_sol2 <= 2.269) q2_final = q2_sol2; 
+    if(1.000 <= q2_sol2 && q2_sol2 <= 3) q2_final = q2_sol2; 
 
     //if(q2_lower_limit >= q2_sol1 && q2_sol1 <= q2_upper_limit) q2_final = q2_sol1; 
 
@@ -377,10 +377,16 @@ void RobotHWInterface::ackermann_inverse(){
     rear_left_wheel_speed = static_cast<float>(left_vel/wheel_radius);
     rear_right_wheel_speed = static_cast<float>(right_vel/wheel_radius);
     servo_angle = static_cast<float>(q2_final*(180.0/M_PI));
+    
+    ROS_INFO("Recebendo");
+    ROS_INFO("%F ", total_x_displacement);
+    ROS_INFO("%F ", total_y_displacement);
+    ROS_INFO("%F ", total_theta_displacement);
 
-    //ROS_INFO("%f ", rear_left_wheel_speed);
-    //ROS_INFO("%f ", rear_right_wheel_speed);
-    //ROS_INFO("%f ", servo_angle);
+    ROS_INFO("Enviando");
+    ROS_INFO("%f ", rear_left_wheel_speed);
+    ROS_INFO("%f ", rear_right_wheel_speed);
+    ROS_INFO("%f ", servo_angle);
     //ROS_INFO("%F ", q2_final);
     //ROS_INFO("%F ", q2_sol1);
     //ROS_INFO("%F ", q2_sol2);
