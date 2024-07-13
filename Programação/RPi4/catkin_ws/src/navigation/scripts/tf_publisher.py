@@ -12,13 +12,15 @@ class   TFClass:
 
         self.br = tf2_ros.TransformBroadcaster()
 
+        self.rate = rospy.Rate(30)
+
         #Defining the map frame and creating the transform between it and the odom frame
         self.t_map_odom = geometry_msgs.msg.TransformStamped()
         self.t_map_odom.header.stamp = rospy.Time.now()
         self.t_map_odom.header.frame_id = "/map"
         self.t_map_odom.child_frame_id = "/odom"
-        self.t_map_odom.transform.translation.x = 10
-        self.t_map_odom.transform.translation.y = 10
+        self.t_map_odom.transform.translation.x = 20
+        self.t_map_odom.transform.translation.y = 20
         self.t_map_odom.transform.translation.z = 0
 
         self.t_map_odom.transform.rotation.x = 0.0
@@ -39,6 +41,8 @@ class   TFClass:
         self.t.transform.rotation.z = 0.0
         self.t.transform.rotation.w = 1
 
+        self.sending_tfs()
+
 
     def update_time_stamps(self): #Updates the time stamps of all frames
         self.t_map_odom.header.stamp = rospy.Time.now()
@@ -53,10 +57,15 @@ class   TFClass:
         self.t.transform.rotation = msg.pose.pose.orientation
 
         self.update_time_stamps() #Updating the time stamps of all frames
+    
+    def sending_tfs(self):
+        while not rospy.is_shutdown():
+            #Broadcasting the transforms of all frames
+            self.br.sendTransform(self.t_map_odom) #Updating the transform between the map and the odom frames
+            self.br.sendTransform(self.t) #Updating the transform between odom and base_link
 
-        #Broadcasting the transforms of all frames
-        self.br.sendTransform(self.t_map_odom) #Updating the transform between the map and the odom frames
-        self.br.sendTransform(self.t) #Updating the transform between odom and base_link
+            self.rate.sleep()
+
 
 if __name__ == '__main__':
     rospy.init_node('tf_pub_node')
