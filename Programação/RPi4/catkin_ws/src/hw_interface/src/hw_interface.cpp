@@ -97,10 +97,10 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
                             //std::cout<<total_theta_displacement<<" ";
                             //std::cout<<time_stamp<<std::endl;
 
-                            //ROS_INFO("%F ", total_x_displacement);
-                            //ROS_INFO("%F ", total_y_displacement);
-                            //ROS_INFO("%F ", total_theta_displacement);
-                            //ROS_INFO("%d ", time_stamp);
+                            ROS_INFO("%F ", total_x_displacement);
+                            ROS_INFO("%F ", total_y_displacement);
+                            ROS_INFO("%F ", total_theta_displacement);
+                            ROS_INFO("%d ", time_stamp);
                             
 
 
@@ -260,6 +260,7 @@ void RobotHWInterface::updateOdometry() {
     odom_trans.transform.rotation = odom_quat;
 
     odom_broadcaster.sendTransform(odom_trans);
+    ROS_INFO("Odom tf sent");
 
     nav_msgs::Odometry odom;
     odom.header.stamp = current_time;
@@ -276,7 +277,7 @@ void RobotHWInterface::updateOdometry() {
     odom.twist.twist.angular.z = base_vel_angular_z;
 
     odom_pub.publish(odom);
-
+    ROS_INFO("Odom published");
 
 }
 
@@ -378,15 +379,15 @@ void RobotHWInterface::ackermann_inverse(){
     rear_right_wheel_speed = static_cast<float>(right_vel/wheel_radius);
     servo_angle = static_cast<float>(q2_final*(180.0/M_PI));
     
-    ROS_INFO("Recebendo");
-    ROS_INFO("%F ", total_x_displacement);
-    ROS_INFO("%F ", total_y_displacement);
-    ROS_INFO("%F ", total_theta_displacement);
+    //ROS_INFO("Recebendo");
+    //ROS_INFO("%F ", total_x_displacement);
+    //ROS_INFO("%F ", total_y_displacement);
+    //ROS_INFO("%F ", total_theta_displacement);
 
-    ROS_INFO("Enviando");
-    ROS_INFO("%f ", rear_left_wheel_speed);
-    ROS_INFO("%f ", rear_right_wheel_speed);
-    ROS_INFO("%f ", servo_angle);
+    //ROS_INFO("Enviando");
+    //ROS_INFO("%f ", rear_left_wheel_speed);
+    //ROS_INFO("%f ", rear_right_wheel_speed);
+    //ROS_INFO("%f ", servo_angle);
     //ROS_INFO("%F ", q2_final);
     //ROS_INFO("%F ", q2_sol1);
     //ROS_INFO("%F ", q2_sol2);
