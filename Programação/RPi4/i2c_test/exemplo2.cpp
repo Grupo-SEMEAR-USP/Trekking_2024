@@ -5,6 +5,8 @@
 #include <chrono>
 #include <cmath>
 
+
+
 int main(){
 
     i2c_config_t i2c_config = {};
@@ -20,8 +22,8 @@ int main(){
         i2c_config.use_10bit_adress = false;
 
     i2c_slave_device_config_t slave_config;
-        slave_config.tx_buffer_size = 8;
-        slave_config.rx_buffer_size = 8;
+        slave_config.tx_buffer_size = 12;
+        slave_config.rx_buffer_size = 16;
         slave_config.i2c_slave_adress = 0x69;
 
     bsc_i2c_handle i2c_master;
@@ -29,37 +31,63 @@ int main(){
     i2c_master.i2c_add_slave_device("espFeliz", slave_config);
     i2c_master.i2c_start_bsc();
 
-    uint8_t val[] = {1,2,3,4,5,6,7,8};
-    uint8_t val2[8] = {0,0,0,0,0,0,0,0};
+    double x = 0;
+    double y = 0;
+    double th = 0;
+    uint32_t time_stamp = 0;
+
+    int xi = 0;
+    int yi = 0;
+    int thi = 0;
+    uint32_t time_stampi = 0;
     
     usleep(2000000);
 
-    float left=0;
-    float right=0;
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point end;
     while (1){
-        memcpy(i2c_master.slave_devices["espFeliz"].tx_buffer,val,8);
-        start  = std::chrono::high_resolution_clock::now();
-        i2c_master.i2c_blocking_write("espFeliz");
-        end  = std::chrono::high_resolution_clock::now();
+        float velleft = 10;
+        float velright  =10;
+        float serv = 80;
         
-        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "[µs]" << std::endl;
+        //std::cout<<"voc1"<<std::endl;
+        //std::cout<<"voc0"<<std::endl;
+        //uint8_t 
+        memcpy(i2c_master.slave_devices["espFeliz"].tx_buffer,&velleft,4);
+        memcpy((i2c_master.slave_devices["espFeliz"].tx_buffer)+4,&velright,4);
+        memcpy((i2c_master.slave_devices["espFeliz"].tx_buffer)+8,&serv,4);
+        //std::cout<<"voc";
+        //i2c_master.wait_bsc_transfer();
+    //carregar dado aqui ou em calculate_speed
+        i2c_master.i2c_blocking_write("espFeliz"); //continue;
+        //std::cout<<"voc2"<<std::endl;
+        
         usleep(1500);
-        start  = std::chrono::high_resolution_clock::now();
+
         if(i2c_master.i2c_blocking_read("espFeliz")){
-        end  = std::chrono::high_resolution_clock::now();
-        std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "[µs]" << std::endl;
-        memcpy(val2, i2c_master.slave_devices["espFeliz"].rx_buffer,8);
-        memcpy(&left, val2,4);
-        memcpy(&right, val2+4,4);
+        
+
+
+            memcpy(&xi, i2c_master.slave_devices["espFeliz"].rx_buffer,4);
+            memcpy(&yi, (i2c_master.slave_devices["espFeliz"].rx_buffer)+4,4);
+            memcpy(&thi, (i2c_master.slave_devices["espFeliz"].rx_buffer)+8,4);
+            memcpy(&time_stampi, (i2c_master.slave_devices["espFeliz"].rx_buffer)+12,4);
+
+
+            x = (static_cast<double>(xi))/1000000;
+            y = (static_cast<double>(yi))/1000000;
+            th = (static_cast<double>(thi))/1000;
+            time_stamp = time_stampi;
         
         //for (int i = 0; i < 8 ;i++){
         //    std::cout<<(int)i2c_master.slave_devices["espFeliz"].rx_buffer[i];
         //}
         //std::cout<<std::endl;
-        std::cout<<"left: "<<left<<" right: "<<right;
+        std::cout<<"x: "<<x<<" y: "<<y<<" th: "<<th<<" time: "<<time_stamp;
         std::cout<<std::endl;
+        }
+        else{
+            std::cout<<"failed"<<std::endl;
         }
         
         usleep(1500);
