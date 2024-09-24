@@ -85,7 +85,7 @@ pid_ctrl_config_t pid_ctrl_config_info(float *k_values,float max_duty_value, flo
         .max_integral = max_integral,
         .min_integral = -max_integral,
         //.cal_type = PID_CAL_TYPE_POSITIONAL_DELTA_TIME, //se tiver dando merda coloque PID_CAL_TYPE_POSITIONAL_DEAFULT
-        .cal_type = PID_CAL_TYPE_POSITIONAL_DEFAULT,
+        .cal_type = PID_CAL_TYPE_POSITIONAL_DEFAULT,//PID_CAL_TYPE_POSITIONAL,
         .prev_ts = 0
     };
 

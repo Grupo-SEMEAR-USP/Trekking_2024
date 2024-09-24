@@ -26,20 +26,21 @@
 #define INPUT_1 GPIO_NUM_33
 #define INPUT_2 GPIO_NUM_25
 
-#define ENABLE_ESQ ENABLE_A
+#define ENABLE_DIR ENABLE_A
 
 #define ENABLE_B GPIO_NUM_4
 #define INPUT_3 GPIO_NUM_18
 #define INPUT_4 GPIO_NUM_19
 
-#define ENABLE_DIR ENABLE_B
+#define ENABLE_ESQ ENABLE_B
 
 //servo pwm constants
 
 #define SERVO_DUTY_PIN 13
 #define SERVO_PWM_TIMER LEDC_TIMER_2//pwm channel for servo
 #define SERVO_PWM_CHANNEL LEDC_CHANNEL_2
-#define SERVO_INITIAL_ANGLE 45.0
+#define SERVO_INITIAL_ANGLE 113.12
+#define SERVO_OFFSET -3.5
 
 //hardware definitions for pwm 
 #define PWM_FREQ 2000
@@ -52,9 +53,9 @@
 //Macros to help identificating which motor will be used
 #define channel_choose(channel) ((channel == ESQ) ? LEDC_CHANNEL_0 : LEDC_CHANNEL_1) //Canal do timer do PWM
 #define timer_choose(timer) ((timer == ESQ) ? LEDC_TIMER_0 : LEDC_TIMER_1) //Timer escolhido
-#define enable_choose(channel) ((channel == ESQ) ? ENABLE_A : ENABLE_B) //Pino do enable
-#define motor_choose_in_primary(motor) ((motor == ESQ) ? INPUT_1 : INPUT_3) //Pino "primário" do motor
-#define motor_choose_in_secundary(motor) ((motor == ESQ) ? INPUT_2 : INPUT_4) //Pino "secundário" do motor
+#define enable_choose(channel) ((channel == ESQ) ? ENABLE_ESQ : ENABLE_DIR) //Pino do enable
+#define motor_choose_in_primary(motor) ((motor == ESQ) ? INPUT_3 : INPUT_2) //Pino "primário" do motor
+#define motor_choose_in_secundary(motor) ((motor == ESQ) ? INPUT_4 : INPUT_1) //Pino "secundário" do motor
 
 //i2c constants
 #define I2C_DELAY 4
@@ -72,7 +73,7 @@
 #define I2C_SLAVE_RX_BUF_LEN 384 //buffer for 32 receiving messages
 
 //pid constants
-#define PID_DELAY 8
+#define PID_DELAY 8//8
 
 #define MAX_PID_VALUE 8191.0
 #define MAX_INTEGRAL_VALUE 3880.0
@@ -84,7 +85,7 @@
 
 #define KP_RIGHT 10.0
 #define KI_RIGHT 2.0
-#define KD_RIGHT 0.5
+#define KD_RIGHT 1.0
 
 
 //limits of pwm duty cycle values to escape inertia
@@ -104,10 +105,10 @@
 
 //encoder contasnts
 #define PCNT_CHA_LEFT 26
-#define PCNT_CHB_LEFT 27
+#define PCNT_CHB_LEFT 5
 
-#define PCNT_CHA_RIGHT 5
-#define PCNT_CHB_RIGHT 14
+#define PCNT_CHA_RIGHT 14
+#define PCNT_CHB_RIGHT 27
 
 #define PI 3.14159
 
@@ -119,7 +120,7 @@
 
 //defining calc parameters
 
-#define WHELL_RADIUS 30.0 //wheel radius in mm
+#define WHELL_RADIUS 50.0 //wheel radius in mm
 #define WHELL_REAR_SEPARATION 250.0 //back whell separation in mm
 
 #define ENCODER_DISPLACEMENT (2*PI*WHELL_RADIUS)/(ENCODER_RESOLUTION_TICKS)

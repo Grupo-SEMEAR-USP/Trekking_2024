@@ -98,10 +98,10 @@ void core0fuctions(void *params){
     monitor_encoder_pid_calc_timer_handle = xTimerCreate("Timer do encoder e pid",pdMS_TO_TICKS(PID_DELAY),pdTRUE,NULL,monitor_encoder_pid_calc);
 
     //init interrupts
-    interrupts_init();
-    //xTimerStart(
-    //monitor_encoder_pid_calc_timer_handle 
-    //,0);
+    //interrupts_init();
+    xTimerStart(
+    monitor_encoder_pid_calc_timer_handle 
+    ,0);
 
     vTaskSuspend(NULL);
 
@@ -130,8 +130,9 @@ void monitor_encoder_pid_calc(void *params){
             //x and y displacements are given in milimeters
             global_total_x +=  (double)((local_delta_encoder_ticks_right+local_delta_encoder_ticks_left)*ENCODER_DISPLACEMENT*0.5*cos(global_total_theta));
             global_total_y +=  (double)((local_delta_encoder_ticks_right+local_delta_encoder_ticks_left)*ENCODER_DISPLACEMENT*0.5*sin(global_total_theta));
-            global_total_theta += (double)((local_delta_encoder_ticks_right-local_delta_encoder_ticks_left)*ANGULAR_DISPLACEMENT);
+            global_total_theta += (double)(((local_delta_encoder_ticks_right-local_delta_encoder_ticks_left)*0.5*ENCODER_DISPLACEMENT)/WHELL_REAR_SEPARATION);//*ANGULAR_DISPLACEMENT);
 
+            //printf("global_total_x: %lf, global_total_y: %lf, global_total_theta: %lf\n",global_total_x,global_total_y,global_total_theta);
             //global_servo_angle = local_servo_angle;
 
             global_time_stamp_miliseconds  = global_timer_miliseconds;
@@ -169,7 +170,7 @@ void monitor_encoder_pid_calc(void *params){
         //printf("vel_calc: %f rad/s vel ros: %f rad/s duty: %f\n",local_motor_angular_speed_left,local_ros_angular_speed_left,pid_result_duty_left);
         pwm_actuate(ESQ,pid_result_duty_left);
         pwm_actuate(DIR,pid_result_duty_right);
-        iot_servo_write_angle(LEDC_LOW_SPEED_MODE, SERVO_PWM_CHANNEL, local_servo_angle);
+        iot_servo_write_angle(LEDC_LOW_SPEED_MODE, SERVO_PWM_CHANNEL, (local_servo_angle + SERVO_OFFSET));
 
         //vTaskDelay(pdMS_TO_TICKS(PID_DELAY));
 

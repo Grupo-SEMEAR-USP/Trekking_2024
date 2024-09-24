@@ -30,8 +30,8 @@ void core1functions(void *params){
         //i2c_read(rx_data, &global_ros_angular_speed_left, &global_ros_angular_speed_right);
 
         xSemaphoreTake(xSemaphore_getRosSpeed,portMAX_DELAY);    
-        global_ros_angular_speed_left=-10.0;
-        global_ros_angular_speed_right=-10.0;
+        global_ros_angular_speed_left=10.0;
+        global_ros_angular_speed_right=10.0;
         xSemaphoreGive(xSemaphore_getRosSpeed);
 
         vTaskDelay(pdMS_TO_TICKS(I2C_DELAY));
