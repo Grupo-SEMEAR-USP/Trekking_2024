@@ -14,10 +14,10 @@ int main(int argc, char** argv) {
         slave_config.rx_buffer_size = I2C_RX_BUFFER_SIZE;
         slave_config.i2c_slave_adress = I2C_SLAVE_ADRESS;
 
-    ROS_INFO("controlle");
-    ROS_INFO("Pós controller");
+    ROS_INFO("Iniciando");
+    ROS_INFO("Instalando controller");
     RobotHWInterface controller(nh,i2c_config,slave_config); // Passa o NodeHandle como argumento
-    ROS_INFO("Pós contro");
+    ROS_INFO("Controller instalado ");
 
     ros::Rate rate(HW_IF_UPDATE_FREQ);
 

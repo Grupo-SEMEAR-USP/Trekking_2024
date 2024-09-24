@@ -53,7 +53,7 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
             memcpy(&total_y_displacement_intermed, (i2c_master.slave_devices["espFeliz"].rx_buffer)+4,4);
             memcpy(&total_theta_displacement_intermed, (i2c_master.slave_devices["espFeliz"].rx_buffer)+8,4);
             memcpy(&time_stamp_intermed, (i2c_master.slave_devices["espFeliz"].rx_buffer)+12,4);
-            ROS_INFO("xxxx controller");
+            ROS_INFO("Tentando carregar primeiro dado");
             if(time_stamp_intermed == 0x7fffffff){
                 throw std::runtime_error("Esp32 is in Error state!");
             }
@@ -97,10 +97,10 @@ void RobotHWInterface::init_i2c(i2c_config_t& i2c_configuration, i2c_slave_devic
                             //std::cout<<total_theta_displacement<<" ";
                             //std::cout<<time_stamp<<std::endl;
 
-                            ROS_INFO("%F ", total_x_displacement);
-                            ROS_INFO("%F ", total_y_displacement);
-                            ROS_INFO("%F ", total_theta_displacement);
-                            ROS_INFO("%d ", time_stamp);
+                            //ROS_INFO("%F ", total_x_displacement);
+                            //ROS_INFO("%F ", total_y_displacement);
+                            //ROS_INFO("%F ", total_theta_displacement);
+                            //ROS_INFO("%d ", time_stamp);
                             
 
 
@@ -150,7 +150,7 @@ void RobotHWInterface::calculate_speed(){
 
             total_x_displacement = (static_cast<double>(total_x_displacement_intermed))/1000000;
             total_y_displacement = (static_cast<double>(total_y_displacement_intermed))/1000000;
-            total_theta_displacement = (static_cast<double>(total_x_displacement_intermed))/1000;
+            total_theta_displacement = (static_cast<double>(total_theta_displacement_intermed))/1000;
             time_stamp = time_stamp_intermed;
 
             vel_linear_x = (total_x_displacement - total_x_displacement_old)/(time_stamp-time_stamp_old);
@@ -260,7 +260,7 @@ void RobotHWInterface::updateOdometry() {
     odom_trans.transform.rotation = odom_quat;
 
     odom_broadcaster.sendTransform(odom_trans);
-    ROS_INFO("Odom tf sent");
+    //ROS_INFO("Odom tf sent");
 
     nav_msgs::Odometry odom;
     odom.header.stamp = current_time;
@@ -277,7 +277,7 @@ void RobotHWInterface::updateOdometry() {
     odom.twist.twist.angular.z = base_vel_angular_z;
 
     odom_pub.publish(odom);
-    ROS_INFO("Odom published");
+    //ROS_INFO("Odom published");
 
 }
 
@@ -379,10 +379,11 @@ void RobotHWInterface::ackermann_inverse(){
     rear_right_wheel_speed = static_cast<float>(right_vel/wheel_radius);
     servo_angle = static_cast<float>(q2_final*(180.0/M_PI));
     
-    //ROS_INFO("Recebendo");
-    //ROS_INFO("%F ", total_x_displacement);
-    //ROS_INFO("%F ", total_y_displacement);
-    //ROS_INFO("%F ", total_theta_displacement);
+    ROS_INFO("Recebendo");
+    ROS_INFO("%F ", total_x_displacement);
+    ROS_INFO("%F ", total_y_displacement);
+    ROS_INFO("%F ", total_theta_displacement);
+    ROS_INFO("%d ", time_stamp);
 
     //ROS_INFO("Enviando");
     //ROS_INFO("%f ", rear_left_wheel_speed);
