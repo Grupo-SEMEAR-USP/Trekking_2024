@@ -161,7 +161,6 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  scripts/odom_pub.py
   scripts/odom_pub_simul.py
   scripts/cmd_vel_to_ackermann_drive.py
   scripts/cmd_vel_to_ackermann_drive_rod.py
@@ -171,6 +170,7 @@ catkin_install_python(PROGRAMS
   scripts/path_saver.py
   scripts/path_reader.py
   scripts/odom_front.py
+  scripts/odom_esp_test.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

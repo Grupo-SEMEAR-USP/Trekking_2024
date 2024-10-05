@@ -24,7 +24,7 @@ class   TFClass:
         self.t_map_odom.transform.translation.y = 0.0
         self.t_map_odom.transform.translation.z = 0.0
 
-        self.quartenion = quaternion_from_euler(0.0, 0.0, 3.14159)
+        self.quartenion = quaternion_from_euler(0.0, 0.0, 1.570796) #orientação do frame map em relação ao odom
 
         self.t_map_odom.transform.rotation.x = self.quartenion[0]
         self.t_map_odom.transform.rotation.y = self.quartenion[1]
@@ -39,10 +39,13 @@ class   TFClass:
         self.t.transform.translation.x = 0.0
         self.t.transform.translation.y = 0.0
         self.t.transform.translation.z = 0.0
-        self.t.transform.rotation.x = 0.0
-        self.t.transform.rotation.y = 0.0
-        self.t.transform.rotation.z = 0.0
-        self.t.transform.rotation.w = 1
+
+        self.quartenion = quaternion_from_euler(0.0, 0.0, -1.570796) #orientação de odom com relação a base_link
+
+        self.t.transform.rotation.x = self.quartenion[0]
+        self.t.transform.rotation.y = self.quartenion[1]
+        self.t.transform.rotation.z = self.quartenion[2]
+        self.t.transform.rotation.w = self.quartenion[3]
 
         self.sending_tfs()
 
@@ -58,11 +61,11 @@ class   TFClass:
         self.t.transform.translation.y = msg.pose.pose.position.y
         self.t.transform.translation.z = 0.0
         self.t.transform.rotation = msg.pose.pose.orientation
-
-        self.update_time_stamps() #Updating the time stamps of all frames
     
     def sending_tfs(self):
         while not rospy.is_shutdown():
+            self.update_time_stamps() #Updating the time stamps of all frames
+
             #Broadcasting the transforms of all frames
             self.br.sendTransform(self.t_map_odom) #Updating the transform between the map and the odom frames
             self.br.sendTransform(self.t) #Updating the transform between odom and base_link
