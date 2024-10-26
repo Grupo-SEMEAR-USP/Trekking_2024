@@ -8,6 +8,7 @@
     SemaphoreHandle_t xSemaphore_getSpeed;
     SemaphoreHandle_t xSemaphore_getRosSpeed;
     EventGroupHandle_t initialization_groupEvent;
+    TaskHandle_t Core0_Task_Handle;
 
     const int task0_init_done = 0b01;
     const int task1_init_done = 0b10;
@@ -16,18 +17,8 @@
     float global_ros_angular_speed_left = 0;
     float global_ros_angular_speed_right = 0;
 
-    //float global_motor_angular_speed_left = 0 ;
-    //float global_motor_angular_speed_right = 0;
-
-    double global_total_x = 0;
-    double global_total_y = 0;
-    double global_total_theta = 0;//PI/2;
-
-    //float global_servo_angle = (float) SERVO_INITIAL_ANGLE;
-    float global_ros_servo_angle = (float) SERVO_INITIAL_ANGLE;
-
-    uint32_t global_timer_miliseconds = 0;
-    uint32_t global_time_stamp_miliseconds = 0;
+    float global_motor_angular_speed_left = 0 ;
+    float global_motor_angular_speed_right = 0;
 
 void app_main() {
     //initializing locks
@@ -36,7 +27,7 @@ void app_main() {
     initialization_groupEvent = xEventGroupCreate(); //it's perhaps not necessary
 
     //Inicializar as tasks
-    xTaskCreatePinnedToCore(&core0fuctions, "task que inicializa pwm,encoders e pid no core 0", 2048, NULL, 1, NULL, 0);
-    xTaskCreatePinnedToCore(&core1functions, "task que inicializa o i2c no core 1", 2048, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(&core0fuctions, "task que inicializa pwm,encoders e pid no core 0", 2048, NULL, 1, &Core0_Task_Handle, 0);
+    //xTaskCreatePinnedToCore(&core1functions, "task que inicializa o i2c no core 1", 2048, NULL, 1, NULL, 1);
 }
 

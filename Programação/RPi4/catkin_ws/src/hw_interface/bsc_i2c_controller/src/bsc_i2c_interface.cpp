@@ -600,7 +600,7 @@ void bsc_i2c_handle::mmap_i2c_bsc()
 	if (i2c_bsc_base_fd == -1) {		
 		throw std::runtime_error("error opening /dev/mem for i2c bsc controller");
 	}
-
+	
 	bsc_unit = (volatile uint32_t *)mmap((void *)bsc_adresses.at(bsc_port), 0x20, PROT_READ | PROT_WRITE, MAP_SHARED, i2c_bsc_base_fd, bsc_adresses.at(bsc_port));
 	
 	if (bsc_unit == (void *)-1) {

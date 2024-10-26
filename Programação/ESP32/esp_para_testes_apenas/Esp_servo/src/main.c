@@ -16,18 +16,8 @@
     float global_ros_angular_speed_left = 0;
     float global_ros_angular_speed_right = 0;
 
-    //float global_motor_angular_speed_left = 0 ;
-    //float global_motor_angular_speed_right = 0;
-
-    double global_total_x = 0;
-    double global_total_y = 0;
-    double global_total_theta = 0;//PI/2;
-
-    //float global_servo_angle = (float) SERVO_INITIAL_ANGLE;
-    float global_ros_servo_angle = (float) SERVO_INITIAL_ANGLE;
-
-    uint32_t global_timer_miliseconds = 0;
-    uint32_t global_time_stamp_miliseconds = 0;
+    float global_motor_angular_speed_left = 0 ;
+    float global_motor_angular_speed_right = 0;
 
 void app_main() {
     //initializing locks

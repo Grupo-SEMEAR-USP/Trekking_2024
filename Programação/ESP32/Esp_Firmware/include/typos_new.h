@@ -14,10 +14,11 @@
 #include "driver/i2c.h"
 #include "iot_servo.h"
 #include <string.h>
+#include <math.h>
 
 //start and stop interrupts gpio constants
-#define START_MOTOR_INTERRUPT_PIN GPIO_NUM_35
-#define STOP_MOTOR_INTERRUPT_PIN GPIO_NUM_34
+#define START_MOTOR_INTERRUPT_PIN GPIO_NUM_34
+#define STOP_MOTOR_INTERRUPT_PIN GPIO_NUM_35
 
 
 //pwm gpio constants
@@ -38,6 +39,8 @@
 #define SERVO_DUTY_PIN 13
 #define SERVO_PWM_TIMER LEDC_TIMER_2//pwm channel for servo
 #define SERVO_PWM_CHANNEL LEDC_CHANNEL_2
+#define SERVO_INITIAL_ANGLE 113.12
+#define SERVO_OFFSET -3.5
 
 //hardware definitions for pwm 
 #define PWM_FREQ 2000
@@ -59,29 +62,30 @@
 #define TIMEOUT_MS_WRITE 0.001
 #define TIMEOUT_MS_READ 0.001
 #define I2C_PORT 0
-#define MENSAGE_SIZE 8
+#define RX_MENSAGE_SIZE 12
+#define TX_MENSAGE_SIZE 16
 
 #define I2C_SLAVE_SCL_IO GPIO_NUM_22 //gpio number for i2c slave clock 
 #define I2C_SLAVE_SDA_IO GPIO_NUM_21 //gpio number for i2c slave data
 #define ESP_SLAVE_ADDR 0x69 //0x69 == ESP que controla a traseira, 0x68 == ESP que controla a frente
 
-#define I2C_SLAVE_TX_BUF_LEN 256
-#define I2C_SLAVE_RX_BUF_LEN 256
+#define I2C_SLAVE_TX_BUF_LEN 512 //buffer for 32 tansmitting messages
+#define I2C_SLAVE_RX_BUF_LEN 384 //buffer for 32 receiving messages
 
 //pid constants
-#define PID_DELAY 8
+#define PID_DELAY 8//8
 
 #define MAX_PID_VALUE 8191.0
 #define MAX_INTEGRAL_VALUE 3880.0
 
 // Kp,Ki,Kd constants
-#define KP_LEFT 10.0
+#define KP_LEFT 100.0
 #define KI_LEFT 2.0
 #define KD_LEFT 1.0
 
 #define KP_RIGHT 10.0
 #define KI_RIGHT 2.0
-#define KD_RIGHT 0.5
+#define KD_RIGHT 1.0
 
 
 //limits of pwm duty cycle values to escape inertia
@@ -112,3 +116,13 @@
 #define ENCODER_COUNTER_WAIT_PID_OP  4  //number of pid operations required to extrac encoder speed
 #define GET_ROS_VAL_COUNTER_WAIT_PID_OP  1
 #define ENCODER_RESOLUTION (((2*PI)/(ENCODER_RESOLUTION_TICKS))/(PID_DELAY*ENCODER_COUNTER_WAIT_PID_OP))*1000 
+
+
+//defining calc parameters
+
+#define WHELL_RADIUS 50.0 //wheel radius in mm
+#define WHELL_REAR_SEPARATION 250.0 //back whell separation in mm
+
+#define ENCODER_DISPLACEMENT (2*PI*WHELL_RADIUS)/(ENCODER_RESOLUTION_TICKS)
+
+#define ANGULAR_DISPLACEMENT ENCODER_DISPLACEMENT/WHELL_REAR_SEPARATION

@@ -14,8 +14,6 @@ RobotHWInterface::RobotHWInterface(ros::NodeHandle& nh, i2c_config_t& i2c_config
     // Publishes odometry
     odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 50);
 
-
-
     // Carregar parâmetros do arquivo .yaml
     nh.getParam("robot_geometry/wheel_radius", wheel_radius);
     nh.getParam("robot_geometry/wheel_separation_width", wheel_separation_width);

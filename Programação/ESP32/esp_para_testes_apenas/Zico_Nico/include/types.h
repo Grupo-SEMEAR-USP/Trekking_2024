@@ -109,6 +109,16 @@
 #define PI 3.14159
 
 #define ENCODER_RESOLUTION_TICKS 1320
-#define ENCODER_COUNTER_WAIT_PID_OP  4  //number of pid operations required to extrac encoder speed
+#define ENCODER_COUNTER_WAIT_PID_OP  1  //number of pid operations required to extrac encoder speed
 #define GET_ROS_VAL_COUNTER_WAIT_PID_OP  1
 #define ENCODER_RESOLUTION (((2*PI)/(ENCODER_RESOLUTION_TICKS))/(PID_DELAY*ENCODER_COUNTER_WAIT_PID_OP))*1000 
+
+
+//defining calc parameters
+
+#define WHELL_RADIUS 50.0 //wheel radius in mm
+#define WHELL_REAR_SEPARATION 250.0 //back whell separation in mm
+
+#define ENCODER_DISPLACEMENT (2*PI*WHELL_RADIUS)/(ENCODER_RESOLUTION_TICKS)
+
+#define ANGULAR_DISPLACEMENT ENCODER_DISPLACEMENT/WHELL_REAR_SEPARATION
